@@ -1227,7 +1227,7 @@ yyreduce:
 
   case 4:
 #line 21 "calc.y" /* yacc.c:1646  */
-    {printf(" %f ",(yyvsp[0].f)) ;}
+    {printf(" %f \n",(yyvsp[0].f)) ;}
 #line 1232 "y.tab.c" /* yacc.c:1646  */
     break;
 
