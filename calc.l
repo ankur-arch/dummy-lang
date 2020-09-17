@@ -11,7 +11,7 @@ int yylex();
 %%
 
 [0-9]+(\.[0-9]+)?([eE][0-9]+)? { yylval.f = atof(yytext); return FNUM;}
-[-+()*/]                       {return yytext[0];}
+[-+()*/;]                       {return yytext[0];}
 [ \t\n]                        {;}
 .                              {ECHO; yyerror ("unexpected character");} 
 

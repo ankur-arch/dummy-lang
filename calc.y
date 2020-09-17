@@ -9,15 +9,16 @@ void yyerror(char *msg);
    float f;
    int i;
 }
+
 %start M
 %token<f> FNUM
 %type<f> E F G T
 
 %%
-M : S ';'          {;}              
-  | M S ';'        {;}
+M : S ';'       {;}              
+  | M S ';'     {;}
 
-S : E           {printf(" %f ",$1) ;}
+S : E           {printf(" %f \n",$1) ;}
   ;
 
 E : E '+' F     {$$ = $1 + $3;}
