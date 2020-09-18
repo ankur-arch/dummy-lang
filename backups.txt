@@ -1,3 +1,4 @@
+cmake file
 calc: lex.yy.c TypeUtils.c y.tab.c
 	gcc -g lex.yy.c TypeUtils.c y.tab.c -o calc
 
@@ -12,6 +13,13 @@ TypeUtils.c: Types.h
 
 clean: 
 	rm -rf lex.yy.c y.tab.c y.tab.h calc calc.dSYM
+
+
+fixed major bug : details regarding yylval
+https://tldp.org/HOWTO/Lex-YACC-HOWTO-6.html#:~:text=Each%20call%20to%20yylex(),file%20by%20re%23defining%20YYSTYPE.
+
+adding multiple types 
+https://stackoverflow.com/questions/22891458/assigning-multiple-types-to-non-terminals-in-bison
 
 
 /*
@@ -36,6 +44,5 @@ clean:
     printf("Hello world %s , value : %f \n %d \n", FloatVariableTable[0].Name, FloatVariableTable[0].value, FloatVariableStackCounter);
     updateFloatVariable("hasan",525);
     printf("Hello world %s , value : %f \n %d \n", FloatVariableTable[0].Name, FloatVariableTable[0].value ,FloatVariableStackCounter);
-
 
 */
