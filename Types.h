@@ -7,7 +7,7 @@ struct Float
 };
 extern int FloatVariableStackCounter;
 struct Float FloatVariableTable[MAX_SLOT];
-void addFloatVariable(struct Float v, char * name, float num);
+void addFloatVariable(struct Float v);
 int getFloatValuePosition(char *variableName);
 void updateFloatVariable(char *variableName, float newValue);
 float getFloatVariableValue(char *variableName);

@@ -14,7 +14,7 @@ void yyerror(char *msg);
 }
 
 %start M
-%token FLOAT
+%token<s> FLOAT
 %token<s> VARNAME
 %token<f> FNUM
 %token LT GT LTE GTE ET EQ NOT NET AND OR IF DISPLAY
@@ -26,9 +26,10 @@ void yyerror(char *msg);
 %%
 M : S ';'       {;}              
   | M S ';'     {;}
-  | M DISPLAY E ';' { printf(" %f \n",$3) ; }
+  | M DISPLAY E ';' { printf("%f \n",$3); }
 
-S : VARNAME '=' E         { struct Float v; v.Name = $1 ; v.Type = "float"; v.value=$3; addFloatVariable(v,$1,$3); }                               
+S : FLOAT VARNAME '=' E         { struct Float v; v.Name = $2 ; v.Type = $1 ; v.value=$4; addFloatVariable(v); }
+  | VARNAME '=' E               { updateFloatVariable($1,$3); }                               
   ;
 
 E : E '+' F     {$$ = $1 + $3;}
