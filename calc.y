@@ -10,18 +10,25 @@ void yyerror(char *msg);
 %union{
    float f;
    int i;
+   char* s;
 }
 
 %start M
+%token FLOAT
+%token<s> VARNAME
 %token<f> FNUM
-%token LT GT LTE GTE ET EQ NOT NET AND OR 
-%type<f> E F G 
+%token LT GT LTE GTE ET EQ NOT NET AND OR IF DISPLAY
+%type<s> S 
+%type<f> E F G L
+
+
 
 %%
 M : S ';'       {;}              
   | M S ';'     {;}
+  | M DISPLAY E ';' { printf(" %f \n",$3) ; }
 
-S : E           {printf(" %f \n",$1) ;}
+S : VARNAME '=' E         { struct Float v; v.Name = $1 ; v.Type = "float"; v.value=$3; addFloatVariable(v,$1,$3); }                               
   ;
 
 E : E '+' F     {$$ = $1 + $3;}
@@ -36,8 +43,12 @@ F : F '*' G     {$$ = $1 * $3;}
 
 G : '(' E ')'   {$$ = ($2);}    
   | '-' G       {$$ = -$2;}
-  | FNUM        {$$ = $1;}
-  ;  
+  | L           {$$=$1;} 
+  ;
+
+L : FNUM        {$$ = $1;}
+  | VARNAME     {$$ = getFloatVariableValue($1); }
+  ;    
 %%
 
 void yyerror(char *msg){
@@ -46,27 +57,11 @@ void yyerror(char *msg){
 }
 
 int main(){
-    struct Float v, v2, v3, v4;
-    v.Name = "hasan";
-    v.Type = "Float";
-    v.value = 100;
-
-    v2.Name = "hasan";
-    v2.Type = "Float";
-    v2.value = 30;
-
-    v3.Name = "Mahasan";
-    v3.Type = "Float";
-    v3.value = 120;
-
-    addFloatVariable(v);
-
-    addFloatVariable(v3);
-    float man = getFloatVariableValue("Mahasan");
-    printf("The value of the search function is %f \n", man);
-    printf("Hello world %s , value : %f \n %d \n", FloatVariableTable[0].Name, FloatVariableTable[0].value, FloatVariableStackCounter);
-    updateFloatVariable("hasan",525);
-    printf("Hello world %s , value : %f \n %d \n", FloatVariableTable[0].Name, FloatVariableTable[0].value ,FloatVariableStackCounter);
+    for(int x=0 ; x< 99 ; x++){
+      FloatVariableTable[x].Name = "";
+      FloatVariableTable[x].Type = "Float";
+      FloatVariableTable[x].value = 0.0;
+    };
     yyparse();
     return 0;
 }

@@ -45,31 +45,39 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    FNUM = 258,
-    LT = 259,
-    GT = 260,
-    LTE = 261,
-    GTE = 262,
-    ET = 263,
-    EQ = 264,
-    NOT = 265,
-    NET = 266,
-    AND = 267,
-    OR = 268
+    FLOAT = 258,
+    VARNAME = 259,
+    FNUM = 260,
+    LT = 261,
+    GT = 262,
+    LTE = 263,
+    GTE = 264,
+    ET = 265,
+    EQ = 266,
+    NOT = 267,
+    NET = 268,
+    AND = 269,
+    OR = 270,
+    IF = 271,
+    DISPLAY = 272
   };
 #endif
 /* Tokens.  */
-#define FNUM 258
-#define LT 259
-#define GT 260
-#define LTE 261
-#define GTE 262
-#define ET 263
-#define EQ 264
-#define NOT 265
-#define NET 266
-#define AND 267
-#define OR 268
+#define FLOAT 258
+#define VARNAME 259
+#define FNUM 260
+#define LT 261
+#define GT 262
+#define LTE 263
+#define GTE 264
+#define ET 265
+#define EQ 266
+#define NOT 267
+#define NET 268
+#define AND 269
+#define OR 270
+#define IF 271
+#define DISPLAY 272
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -80,8 +88,9 @@ union YYSTYPE
 
    float f;
    int i;
+   char* s;
 
-#line 85 "y.tab.h" /* yacc.c:1909  */
+#line 94 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
