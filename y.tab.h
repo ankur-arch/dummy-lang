@@ -34,7 +34,7 @@
 # define YY_YY_Y_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -45,23 +45,43 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    FNUM = 258
+    FNUM = 258,
+    LT = 259,
+    GT = 260,
+    LTE = 261,
+    GTE = 262,
+    ET = 263,
+    EQ = 264,
+    NOT = 265,
+    NET = 266,
+    AND = 267,
+    OR = 268
   };
 #endif
 /* Tokens.  */
 #define FNUM 258
+#define LT 259
+#define GT 260
+#define LTE 261
+#define GTE 262
+#define ET 263
+#define EQ 264
+#define NOT 265
+#define NET 266
+#define AND 267
+#define OR 268
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 8 "calc.y" /* yacc.c:1909  */
+#line 10 "calc.y" /* yacc.c:1909  */
 
    float f;
    int i;
 
-#line 65 "y.tab.h" /* yacc.c:1909  */
+#line 85 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

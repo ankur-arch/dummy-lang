@@ -1,7 +1,9 @@
 %{
 #include<stdio.h>
 #include<stdlib.h>
-extern int yylex();    
+#include "Types.h"
+extern int yylex();
+int FloatVariableStackCounter = 0;    
 void yyerror(char *msg);
 %}
 
@@ -12,7 +14,8 @@ void yyerror(char *msg);
 
 %start M
 %token<f> FNUM
-%type<f> E F G T
+%token LT GT LTE GTE ET EQ NOT NET AND OR 
+%type<f> E F G 
 
 %%
 M : S ';'       {;}              
@@ -27,15 +30,12 @@ E : E '+' F     {$$ = $1 + $3;}
   ;
 
 F : F '*' G     {$$ = $1 * $3;} 
+  | F '/' G     {$$ = $1/$3;}
   | G           {$$ = $1;}
   ;
 
-G : G '/' T     {$$ = $1/$3;}
-  | T           {$$ = $1;}    
-  ; 
-
-T : '(' E ')'   {$$ = ($2);}    
-  | '-' T       {$$ = -$2;}
+G : '(' E ')'   {$$ = ($2);}    
+  | '-' G       {$$ = -$2;}
   | FNUM        {$$ = $1;}
   ;  
 %%
@@ -46,6 +46,27 @@ void yyerror(char *msg){
 }
 
 int main(){
+    struct Float v, v2, v3, v4;
+    v.Name = "hasan";
+    v.Type = "Float";
+    v.value = 100;
+
+    v2.Name = "hasan";
+    v2.Type = "Float";
+    v2.value = 30;
+
+    v3.Name = "Mahasan";
+    v3.Type = "Float";
+    v3.value = 120;
+
+    addFloatVariable(v);
+
+    addFloatVariable(v3);
+    float man = getFloatVariableValue("Mahasan");
+    printf("The value of the search function is %f \n", man);
+    printf("Hello world %s , value : %f \n %d \n", FloatVariableTable[0].Name, FloatVariableTable[0].value, FloatVariableStackCounter);
+    updateFloatVariable("hasan",525);
+    printf("Hello world %s , value : %f \n %d \n", FloatVariableTable[0].Name, FloatVariableTable[0].value ,FloatVariableStackCounter);
     yyparse();
     return 0;
 }
