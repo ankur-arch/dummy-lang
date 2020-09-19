@@ -48,49 +48,43 @@ extern int yydebug;
     FLOAT = 258,
     VARNAME = 259,
     FNUM = 260,
-    LT = 261,
-    GT = 262,
-    LTE = 263,
-    GTE = 264,
-    ET = 265,
-    EQ = 266,
-    NOT = 267,
-    NET = 268,
-    AND = 269,
-    OR = 270,
-    IF = 271,
-    DISPLAY = 272
+    LTE = 261,
+    GTE = 262,
+    EQ = 263,
+    NOT = 264,
+    NET = 265,
+    AND = 266,
+    OR = 267,
+    IF = 268,
+    DISPLAY = 269
   };
 #endif
 /* Tokens.  */
 #define FLOAT 258
 #define VARNAME 259
 #define FNUM 260
-#define LT 261
-#define GT 262
-#define LTE 263
-#define GTE 264
-#define ET 265
-#define EQ 266
-#define NOT 267
-#define NET 268
-#define AND 269
-#define OR 270
-#define IF 271
-#define DISPLAY 272
+#define LTE 261
+#define GTE 262
+#define EQ 263
+#define NOT 264
+#define NET 265
+#define AND 266
+#define OR 267
+#define IF 268
+#define DISPLAY 269
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 10 "calc.y" /* yacc.c:1909  */
+#line 13 "calc.y" /* yacc.c:1909  */
 
    float f;
    int i;
    char* s;
 
-#line 94 "y.tab.h" /* yacc.c:1909  */
+#line 88 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

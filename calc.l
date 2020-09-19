@@ -10,6 +10,15 @@ int yylex();
 
 
 %%
+"<"                             { return yytext[0]; } 
+">"                             { return yytext[0]; }
+"<="                            { return LTE; } 
+">="                            { return GTE; } 
+"=="                            { return EQ; }
+"!="                            { return NET; }
+"!"                             { return NOT; }  
+"&&"                            { return AND; }
+"||"                            { return OR; }    
 display                         { return DISPLAY; }
 float                           { yylval.s = strdup(yytext) ; return  FLOAT; }
 'if'                            { return IF; }
