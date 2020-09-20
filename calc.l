@@ -13,6 +13,7 @@ int yylex();
 "<"                             { return yytext[0]; } 
 ">"                             { return yytext[0]; }
 "if"                            {return IF;}
+"else"                          {return ELSE;}
 "}"                             { return yytext[0]; }                                
 "{"                             { return yytext[0]; }        
 "<="                            { return LTE; } 
@@ -23,6 +24,7 @@ int yylex();
 "&&"                            { return AND; }
 "||"                            { return OR; }    
 display                         { return DISPLAY; }
+return                          { return RETURN ; }   
 float                           { yylval.s = strdup(yytext) ; return  FLOAT; }
 'if'                            { return IF; }
 [a-zA-Z]+                       { yylval.s = strdup(yytext) ; return VARNAME; } 

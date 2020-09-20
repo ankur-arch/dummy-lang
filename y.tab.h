@@ -56,7 +56,9 @@ extern int yydebug;
     AND = 266,
     OR = 267,
     IF = 268,
-    DISPLAY = 269
+    DISPLAY = 269,
+    RETURN = 270,
+    ELSE = 271
   };
 #endif
 /* Tokens.  */
@@ -72,19 +74,21 @@ extern int yydebug;
 #define OR 267
 #define IF 268
 #define DISPLAY 269
+#define RETURN 270
+#define ELSE 271
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 11 "calc.y" /* yacc.c:1909  */
+#line 12 "calc.y" /* yacc.c:1909  */
 
    float f;
    int i;
    char* s;
 
-#line 88 "y.tab.h" /* yacc.c:1909  */
+#line 92 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

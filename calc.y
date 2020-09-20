@@ -4,7 +4,8 @@
 #include<stdlib.h>
 #include "Types.h"
 extern int yylex();
-int FloatVariableStackCounter = 0;    
+int FloatVariableStackCounter = 0;
+int yydebug = 1;    
 void yyerror(char *msg);
 %}
 
@@ -14,21 +15,27 @@ void yyerror(char *msg);
    char* s;
 }
 
-%start M
+%start Start
 %token<s> FLOAT
 %token<s> VARNAME
 %token<f> FNUM
-%token '<' '>' LTE GTE EQ NOT NET AND OR IF DISPLAY
-%type<s> S M 
-%type<s>  THENSTMT
+%token '<' '>' LTE GTE EQ NOT NET AND OR IF DISPLAY RETURN ELSE
+%type<s> M S  
+%type<s>  THENSTMT OTHERSTMT
 %type<s>  CONTROL 
 %type<f> E F L D 
 %type<f> G CONDITION
 %nonassoc IF
+%nonassoc ELSE 
 %left GTE LTE EQ NET '>' '<'
 %left NOT AND OR
+%left '+' '-'
+%left '*' '/'
 
 %%
+Start : M
+      ;
+
 M : S ';'       {;}
   | CONTROL ';' {;}
   | CONDITION ';'       {;}        
@@ -43,23 +50,28 @@ S : FLOAT VARNAME '=' E         { struct Float v; v.Name = $2 ; v.Type = $1 ; v.
   | VARNAME '=' E               { updateFloatVariable($1,$3); }                                                          
   ;
 
-CONTROL : IF '(' CONDITION ')''{' THENSTMT '}'   { printf("address in if =>control :%p condition :%p   statement : %p \n",&$$, &$3, &$<s>6); if((int)($3)){ $$=$6; printf("it worked \n") ;}   }
+CONTROL : IF '(' CONDITION ')' THENSTMT    { printf("address in if =>control :%p condition :%p statement : %p \n",&$$, &$3, &$<s>5);     }
+        | IF '(' CONDITION ')' THENSTMT ELSE OTHERSTMT { printf("if - else condition \n"); }
         ;
 
-THENSTMT :  DISPLAY E ';' { int resultif = (int)($<f>-2) ; printf("the address inside the statement %p  with the value being %d\n", &$<f>-2, resultif ); resultif == 1 ? printf("%f \n",$2)  : printf(" \n") ; }
+THENSTMT : '{' RETURN E ';''}'  { int resultif = (int)($<f>-1) ; printf("the address inside the statement %p  with the value being %d\n", &$<f>-1, resultif ); if(resultif == 1){ printf("The returned value %f \n",$3); }  }
          ;
+
+OTHERSTMT : '{' RETURN E ';''}'  { int resultif = (int)($<f>-3) ; printf("the address inside the ELSE statement %p  with the value being %d\n", &$<f>-3, resultif ); if(resultif != 1){ printf("The returned else value %f \n",$3); }  }
+          ;
+
 
 CONDITION : CONDITION OR CONDITION  {  int result = $1 || $3 ; printf("expression %d \n", result); $$ = $1 || $3; }
           | CONDITION AND CONDITION {  int result = $1 && $3 ; printf("expression %d \n", result); $$ = $1 && $3; }
           | NOT CONDITION           {  int result = $2 == 0 ? 1 : 0 ; printf("expression %d \n", result); $$ = ($2 == 0 ? 1 : 0) ; } 
           | G                                         
 
-G : G '<' G   { printf("hit "); int result = $1 < $3 ; printf("%d \n", result); $$ = (int)($1 < $3); }
-  | G '>' G   { printf("hit ");  int result = $1 > $3 ; printf("%d \n", result); $$ = $1 > $3; }
-  | G GTE G   { printf("hit ");  int result = $1 >= $3 ; printf("%d \n", result); $$ = $1 >= $3; }
-  | G LTE G   {  printf("hit ");  int result = $1 <= $3 ; printf("%d \n", result); $$ = $1 <= $3; }
-  | G NET G   { printf("hit "); int result = $1 != $3 ; printf("%d \n", result); $$ = $1 != $3; }
-  | G EQ G    { printf("equality %p \n", &$<f>0); printf("hit ");  int result = $1 == $3 ; printf("%d \n", result); $$ = $1 == $3; } 
+G : G '<' G   { printf("hit lt \n"); int result = $1 < $3 ; printf("%d \n", result); $$ = (int)($1 < $3); }
+  | G '>' G   { printf("hit gt \n");  int result = $1 > $3 ; printf("%d \n", result); $$ = $1 > $3; }
+  | G GTE G   { printf("hit >= \n");  int result = $1 >= $3 ; printf("%d \n", result); $$ = $1 >= $3; }
+  | G LTE G   {  printf("hit <= \n");  int result = $1 <= $3 ; printf("%d \n", result); $$ = $1 <= $3; }
+  | G NET G   { printf("hit != \n"); int result = $1 != $3 ; printf("%d \n", result); $$ = $1 != $3; }
+  | G EQ G    { printf("hit == \n");  int result = $1 == $3 ; printf("%d \n", result); $$ = $1 == $3; } 
   | E         { $$ = $1; }
   ;
 
@@ -85,7 +97,7 @@ L : FNUM        {$$ = $1;}
 %%
 
 void yyerror(char *msg){
-    fprintf(stderr,"%s\n",msg);
+    fprintf(stderr,"%s on the line\n",msg);
     exit(1);
 }
 
