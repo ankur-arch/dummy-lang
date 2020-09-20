@@ -12,6 +12,9 @@ int yylex();
 %%
 "<"                             { return yytext[0]; } 
 ">"                             { return yytext[0]; }
+"if"                            {return IF;}
+"}"                             { return yytext[0]; }                                
+"{"                             { return yytext[0]; }        
 "<="                            { return LTE; } 
 ">="                            { return GTE; } 
 "=="                            { return EQ; }
