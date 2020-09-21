@@ -109,6 +109,10 @@ void pop(){
 }
 
 int top(){
+    if(stackPosition == -1) {
+        printf("Top of the stack is %d and the stack position is %d \n", -1, stackPosition);
+        return -1;
+    };
     int temp = stack[stackPosition-1];
     printf("Top of the stack is %d and the stack position is %d \n", temp,  stackPosition );
     return temp;

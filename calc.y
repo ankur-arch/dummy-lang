@@ -4,7 +4,7 @@
 #include<stdlib.h>
 #include "Types.h"
 extern int yylex();
-int stackPosition = 0 ;
+int stackPosition = -1 ;
 int FloatVariableStackCounter = 0;
 int yydebug = 1;    
 void yyerror(char *msg);
@@ -24,7 +24,7 @@ void yyerror(char *msg);
 %token '<' '>' LTE GTE EQ NOT NET AND OR  DISPLAY RETURN 
 %type<s> M S PRINTER 
 %type<f> G CONDITIONALEXPRESSION CONDITION
-%type<s>  THENSTMT OTHERSTMT
+%type<s>  MATCHEDSTMT UNMATCHEDSTMT
 %type<s>  CONTROL 
 %type<f> E F L D 
 %nonassoc IF
@@ -57,34 +57,38 @@ S : FLOAT VARNAME '=' E ';'        { struct Float v; v.Name = $2 ; v.Type = $1 ;
 PRINTER  : DISPLAY E  { printf("Inside display \n"); top() ; printf("%f \n",$2); }
          ;
 
-CONTROL : IF '(' CONDITIONALEXPRESSION ')' THENSTMT    { int status = top(); if( status==1 || status==-1 ){ printf("address in if =>control :%p condition : %p Statement : %p \n",&$$, &$3, &$<s>5);}else printf("Skipped If condition \n");}
-        | IF '(' CONDITIONALEXPRESSION ')' THENSTMT ELSE OTHERSTMT { int status = top(); if(status==1 || status==-1){ printf("if - %s condition entered \n", $<s>6 ); } }
+/*
+Previous if else logic 
+*/
+
+CONTROL : MATCHEDSTMT 
+        | UNMATCHEDSTMT
         ;
 
-CONDITIONALEXPRESSION : CONDITION     { printf("pushed into conditional \n"); push(!(int)($1)); push((int)($1));}
+MATCHEDSTMT : IF '(' CONDITIONALEXPRESSION ')' MATCHEDSTMT ELSE MATCHEDSTMT   { printf(" ----> matched if else condition \n"); }
+            | '{' M '}'   { printf("Printing result \n");}                    
+            ;
+
+UNMATCHEDSTMT : IF '(' CONDITIONALEXPRESSION ')' CONTROL      { printf(" ----> unmatched if condition \n");}
+              | IF '(' CONDITIONALEXPRESSION ')' MATCHEDSTMT ELSE UNMATCHEDSTMT { printf(" ----> unmatched if else condition \n");}
+              ;
+
+CONDITIONALEXPRESSION : CONDITION     {  printf(" ----> Entered conditional statement \n"); }
                       ;
 
-THENSTMT : '{' RETURN E ';''}'   { int resultif = (int)($<f>-1) ;  printf("inside if the single statement address : %p \n", &$<s>$); printf("the address inside the statement %p  with the value being %d\n", &$<f>-1, resultif ); if(resultif == 1){ printf("The returned value %f \n",$3); } pop(); }
-         | '{' M '}'             {  int resultif = (int)($<f>-1) ; printf("the address inside the statement block %p  with the value being %d\n", &$<f>-1, resultif ); if(resultif == 1){ printf("BLOCK CONDITION MISMATCH \n") ; } pop();  }
-         ;
-
-OTHERSTMT : '{' RETURN E ';' '}' ';'  { int resultif = (int)($<f>-3) ; top();  printf("the address inside the ELSE statement %p  with the value being %d\n",  &$<f>-3, resultif ); if(resultif != 1){ printf("The returned else value %f \n",$3); }  }            
-          ;
-
-
-CONDITION : CONDITION OR CONDITION  {  int result = $1 || $3 ; printf("expression %d \n", result); $$ = $1 || $3; }
-          | CONDITION AND CONDITION {  int result = $1 && $3 ; printf("expression %d \n", result); $$ = $1 && $3; }
-          | NOT CONDITION           {  int result = $2 == 0 ? 1 : 0 ; printf("expression %d \n", result); $$ = ($2 == 0 ? 1 : 0) ; } 
+CONDITION : CONDITION OR CONDITION  {  int result = $1 || $3 ; printf(" Condition --> expression %d \n", result); $$ = $1 || $3; }
+          | CONDITION AND CONDITION {  int result = $1 && $3 ; printf(" Condition --> expression %d \n", result); $$ = $1 && $3; }
+          | NOT CONDITION           {  int result = $2 == 0 ? 1 : 0 ; printf(" Condition --> expression %d \n", result); $$ = ($2 == 0 ? 1 : 0) ; } 
           | G
           ;                                         
 
-G : G '<' G   { printf("hit lt \n"); int result = $1 < $3 ; printf("%d \n", result); $$ = (int)($1 < $3); }
-  | G '>' G   { printf("hit gt \n");  int result = $1 > $3 ; printf("%d \n", result); $$ = $1 > $3; }
-  | G GTE G   { printf("hit >= \n");  int result = $1 >= $3 ; printf("%d \n", result); $$ = $1 >= $3; }
-  | G LTE G   {  printf("hit <= \n");  int result = $1 <= $3 ; printf("%d \n", result); $$ = $1 <= $3; }
-  | G NET G   { printf("hit != \n"); int result = $1 != $3 ; printf("%d \n", result); $$ = $1 != $3; }
-  | G EQ G    { printf("hit == \n");  int result = $1 == $3 ; printf("%d \n", result); $$ = $1 == $3; } 
-  | E         { printf(" Reached E with stack top %d \n", top()) ; $$ = $1; }
+G : G '<' G   { printf(" -> hit lt \n"); int result = $1 < $3 ; printf("%d \n", result); $$ = (int)($1 < $3); }
+  | G '>' G   { printf(" -> hit gt \n");  int result = $1 > $3 ; printf("%d \n", result); $$ = $1 > $3; }
+  | G GTE G   { printf(" -> hit >= \n");  int result = $1 >= $3 ; printf("%d \n", result); $$ = $1 >= $3; }
+  | G LTE G   {  printf(" -> hit <= \n");  int result = $1 <= $3 ; printf("%d \n", result); $$ = $1 <= $3; }
+  | G NET G   { printf(" -> hit != \n"); int result = $1 != $3 ; printf("%d \n", result); $$ = $1 != $3; }
+  | G EQ G    { printf(" -> hit == \n");  int result = $1 == $3 ; printf("%d \n", result); $$ = $1 == $3; } 
+  | E         { printf(" ---> Reached E with stack top value :  %d \n", top()) ; $$ = $1; }
   ;
 
 

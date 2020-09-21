@@ -1,5 +1,8 @@
 if(2==2){
-    display 2+2;
+    display 1;
 }else{
-    return 4;
-};
+    if(2==2){
+        display 2;
+    }
+    display 3;
+}
