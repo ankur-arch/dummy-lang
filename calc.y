@@ -24,7 +24,7 @@ void yyerror(char *msg);
 %token '<' '>' LTE GTE EQ NOT NET AND OR  DISPLAY RETURN 
 %type<s> M S PRINTER 
 %type<f> G CONDITIONALEXPRESSION CONDITION
-%type<s>  MATCHEDSTMT UNMATCHEDSTMT EXTRASTMT
+%type<s>  EXP EXTRA EEXP
 %type<s>  CONTROL 
 %type<f> E F L D 
 %nonassoc IF
@@ -60,20 +60,22 @@ PRINTER  : DISPLAY E  { printf("Inside display \n"); top() ; printf("%f \n",$2);
 /*
 Previous if else logic 
 */
-
-CONTROL : MATCHEDSTMT 
-        | UNMATCHEDSTMT
+CONTROL : IF '(' CONDITIONALEXPRESSION ')' EXP    {  printf(" **** Simple if \n"); };
+        | IF '(' CONDITIONALEXPRESSION ')' EXP EXTRA EEXP { printf(" **** IF ELSEIF ELSE  \n "); }
+        | IF '(' CONDITIONALEXPRESSION ')' EXP  EEXP   { printf(" **** Simple if else \n"); };
         ;
 
-MATCHEDSTMT : IF '(' CONDITIONALEXPRESSION ')' MATCHEDSTMT ELSE MATCHEDSTMT   { printf(" ----> matched if else condition \n"); }
-            | '{' M '}'   { printf("Printing result \n");}                    
-            ;
+EXTRA : EXTRA ELSEIF '(' CONDITIONALEXPRESSION ')' EXP    { printf(" *** Ended else if \n "); }  
+      | ELSEIF '(' CONDITIONALEXPRESSION ')' EXP        { printf(" *** Added else if \n "); }
+      ;
 
-UNMATCHEDSTMT : IF '(' CONDITIONALEXPRESSION ')' CONTROL      { printf(" ----> unmatched if condition \n");}
-              | IF '(' CONDITIONALEXPRESSION ')' MATCHEDSTMT ELSE UNMATCHEDSTMT { printf(" ----> unmatched if else condition \n");}
-              ;
 
-CONDITIONALEXPRESSION : CONDITION     { printf(" ----> Entered conditional statement \n"); }
+EEXP : ELSE '{' M '}'       { if( top() == 0 ){ pop(); push(1) ; printf(" *** Special else check \n "); } }
+     ; 
+EXP : '{' M '}'       { if( top() == 1 ) { printf(" *** <--> expression returned from control flow logic M \n "); } else {printf(" expression declined \n"); } }   
+    ;
+
+CONDITIONALEXPRESSION : CONDITION     { int topval = top(); if(topval==-1 || topval == 1 ){ push((int)($1)); }; if(topval==0){ pop(); push((int)($1)); }; printf(" ----> Entered conditional statement \n"); }
                       ;
 
 CONDITION : CONDITION OR CONDITION  {  int result = $1 || $3 ; printf(" Condition --> expression %d \n", result); $$ = $1 || $3; }
@@ -103,7 +105,7 @@ F : F '*' D     {$$ = $1 * $3;}
   ;
 
 D : '(' CONDITION ')'   {$$ = ($2);}    
-  | '-' D       {$$ = -$2;}
+  | '-' D       {$$ = -1*$2;}
   | L           {$$ = $1;} 
   ;
 
