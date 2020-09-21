@@ -12,8 +12,8 @@ int yylex();
 %%
 "<"                             { return yytext[0]; } 
 ">"                             { return yytext[0]; }
-"if"                            {return IF;}
-"else"                          {return ELSE;}
+"if"                            { yylval.s = strdup(yytext) ; return IF;}
+"else"                          { yylval.s = strdup(yytext) ; return ELSE;}
 "}"                             { return yytext[0]; }                                
 "{"                             { return yytext[0]; }        
 "<="                            { return LTE; } 
@@ -30,7 +30,7 @@ float                           { yylval.s = strdup(yytext) ; return  FLOAT; }
 [a-zA-Z]+                       { yylval.s = strdup(yytext) ; return VARNAME; } 
 [0-9]+(\.[0-9]+)?([eE][0-9]+)?  { yylval.f = atof(yytext); return FNUM; }
 [+\-*/)(=;]                      { return yytext[0]; }
-[ \t\n]                         { ; }
+[ \t\n]+                         { ; }
 .                               { ECHO; yyerror ("unexpected character"); } 
 %%
 

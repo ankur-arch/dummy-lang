@@ -46,3 +46,7 @@ https://stackoverflow.com/questions/22891458/assigning-multiple-types-to-non-ter
     printf("Hello world %s , value : %f \n %d \n", FloatVariableTable[0].Name, FloatVariableTable[0].value ,FloatVariableStackCounter);
 
 */
+
+CONTROL : IF '(' CONDITIONALEXPRESSION ')' THENSTMT    { top(); printf("address in if =>control :%p condition : %p Statement : %p \n",&$$, &$3, &$<s>5); pop();}
+        | IF '(' CONDITIONALEXPRESSION ')' THENSTMT ELSE OTHERSTMT { printf("if - else condition \n"); }
+        ;

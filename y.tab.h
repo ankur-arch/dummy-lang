@@ -46,43 +46,43 @@ extern int yydebug;
   enum yytokentype
   {
     FLOAT = 258,
-    VARNAME = 259,
-    FNUM = 260,
-    LTE = 261,
-    GTE = 262,
-    EQ = 263,
-    NOT = 264,
-    NET = 265,
-    AND = 266,
-    OR = 267,
-    IF = 268,
-    DISPLAY = 269,
-    RETURN = 270,
-    ELSE = 271
+    IF = 259,
+    ELSE = 260,
+    VARNAME = 261,
+    FNUM = 262,
+    LTE = 263,
+    GTE = 264,
+    EQ = 265,
+    NOT = 266,
+    NET = 267,
+    AND = 268,
+    OR = 269,
+    DISPLAY = 270,
+    RETURN = 271
   };
 #endif
 /* Tokens.  */
 #define FLOAT 258
-#define VARNAME 259
-#define FNUM 260
-#define LTE 261
-#define GTE 262
-#define EQ 263
-#define NOT 264
-#define NET 265
-#define AND 266
-#define OR 267
-#define IF 268
-#define DISPLAY 269
-#define RETURN 270
-#define ELSE 271
+#define IF 259
+#define ELSE 260
+#define VARNAME 261
+#define FNUM 262
+#define LTE 263
+#define GTE 264
+#define EQ 265
+#define NOT 266
+#define NET 267
+#define AND 268
+#define OR 269
+#define DISPLAY 270
+#define RETURN 271
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 12 "calc.y" /* yacc.c:1909  */
+#line 14 "calc.y" /* yacc.c:1909  */
 
    float f;
    int i;

@@ -3,8 +3,6 @@
 #include <string.h>
 #include "Types.h"
 
-
-
 void addFloatVariable(struct Float v)
 {
     printf("%s is the string and %f is the number \n", v.Name, v.value);
@@ -70,4 +68,48 @@ float getFloatVariableValue(char *variableName)
         printf("Variable \'%s\' not found \n", variableName);
     };
     return 0;
+}
+
+
+
+// stack for control flow logic 
+
+void push(int status){
+    if(stackPosition>=MAX_SLOT) {
+        printf("Stack Overflow \n");
+        return;
+    }
+    printf("Pushed onto stack %d \n", status);
+    stack[stackPosition++] = status; 
+}
+
+void printStack(){
+    printf(" => ");
+    for (int i = 0; i < MAX_SLOT ; i++)
+    {
+        if(stack[i]!=-1)
+            printf(" %d",stack[i]);
+        else
+        {   if(i==0) printf("Stack Empty");
+            break;
+        }
+        
+    }
+    printf(" \n ");
+}
+
+void pop(){
+    if(stackPosition==-1){
+        printf("Stack Empty \n");
+        return;
+    }
+    int status = stack[stackPosition-1];
+    printf("Popped from stack %d \n",status);
+    stack[stackPosition--] = -1; 
+}
+
+int top(){
+    int temp = stack[stackPosition-1];
+    printf("Top of the stack is %d and the stack position is %d \n", temp,  stackPosition );
+    return temp;
 }
