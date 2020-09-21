@@ -58,7 +58,7 @@ PRINTER  : DISPLAY E  { printf("Inside display \n"); top() ; printf("%f \n",$2);
          ;
 
 CONTROL : IF '(' CONDITIONALEXPRESSION ')' THENSTMT    { int status = top(); if( status==1 || status==-1 ){ printf("address in if =>control :%p condition : %p Statement : %p \n",&$$, &$3, &$<s>5);}else printf("Skipped If condition \n");}
-        | IF '(' CONDITIONALEXPRESSION ')' THENSTMT ELSE OTHERSTMT { printf("if - else condition %s \n", $<s>6); }
+        | IF '(' CONDITIONALEXPRESSION ')' THENSTMT ELSE OTHERSTMT { int status = top(); if(status==1 || status==-1){ printf("if - %s condition entered \n", $<s>6 ); } }
         ;
 
 CONDITIONALEXPRESSION : CONDITION     { printf("pushed into conditional \n"); push(!(int)($1)); push((int)($1));}
@@ -68,7 +68,7 @@ THENSTMT : '{' RETURN E ';''}'   { int resultif = (int)($<f>-1) ;  printf("insid
          | '{' M '}'             {  int resultif = (int)($<f>-1) ; printf("the address inside the statement block %p  with the value being %d\n", &$<f>-1, resultif ); if(resultif == 1){ printf("BLOCK CONDITION MISMATCH \n") ; } pop();  }
          ;
 
-OTHERSTMT : '{' RETURN E ';' '}' ';'  { int resultif = (int)($<f>-3) ; top();  printf("the address inside the ELSE statement %p  with the value being %d\n",  &$<f>-3, resultif ); if(resultif != 1){ printf("The returned else value %f \n",$3); }  }
+OTHERSTMT : '{' RETURN E ';' '}' ';'  { int resultif = (int)($<f>-3) ; top();  printf("the address inside the ELSE statement %p  with the value being %d\n",  &$<f>-3, resultif ); if(resultif != 1){ printf("The returned else value %f \n",$3); }  }            
           ;
 
 

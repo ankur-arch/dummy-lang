@@ -1367,7 +1367,7 @@ yyreduce:
 
   case 14:
 #line 61 "calc.y" /* yacc.c:1646  */
-    { printf("if - else condition %s \n", (yyvsp[-1].s)); }
+    { int status = top(); if(status==1 || status==-1){ printf("if - %s condition entered \n", (yyvsp[-1].s) ); } }
 #line 1372 "y.tab.c" /* yacc.c:1646  */
     break;
 
