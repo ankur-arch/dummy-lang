@@ -14,6 +14,7 @@ int yylex();
 ">"                             { return yytext[0]; }
 "if"                            { yylval.s = strdup(yytext) ; return IF;}
 "else"                          { yylval.s = strdup(yytext) ; return ELSE;}
+"else if"                          { yylval.s = strdup(yytext) ; return ELSEIF;}
 "}"                             { return yytext[0]; }                                
 "{"                             { return yytext[0]; }        
 "<="                            { return LTE; } 

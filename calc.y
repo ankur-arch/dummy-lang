@@ -18,13 +18,13 @@ void yyerror(char *msg);
 }
 
 %start Start
-%token<s> FLOAT IF ELSE
+%token<s> FLOAT IF ELSE ELSEIF
 %token<s> VARNAME
 %token<f> FNUM
 %token '<' '>' LTE GTE EQ NOT NET AND OR  DISPLAY RETURN 
 %type<s> M S PRINTER 
 %type<f> G CONDITIONALEXPRESSION CONDITION
-%type<s>  MATCHEDSTMT UNMATCHEDSTMT
+%type<s>  MATCHEDSTMT UNMATCHEDSTMT EXTRASTMT
 %type<s>  CONTROL 
 %type<f> E F L D 
 %nonassoc IF
@@ -73,7 +73,7 @@ UNMATCHEDSTMT : IF '(' CONDITIONALEXPRESSION ')' CONTROL      { printf(" ----> u
               | IF '(' CONDITIONALEXPRESSION ')' MATCHEDSTMT ELSE UNMATCHEDSTMT { printf(" ----> unmatched if else condition \n");}
               ;
 
-CONDITIONALEXPRESSION : CONDITION     {  printf(" ----> Entered conditional statement \n"); }
+CONDITIONALEXPRESSION : CONDITION     { printf(" ----> Entered conditional statement \n"); }
                       ;
 
 CONDITION : CONDITION OR CONDITION  {  int result = $1 || $3 ; printf(" Condition --> expression %d \n", result); $$ = $1 || $3; }
