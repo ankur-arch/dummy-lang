@@ -6,14 +6,12 @@
 
 void addFloatVariable(struct Float v)
 {
-    printf("%s is the string and %f is the number \n", v.Name, v.value);
-    /*
-    struct Float temp ; 
-    temp.Name = name;
-    temp.Type =  "Float";
-    temp.value = num;
-    */
 
+    int index = getFloatValuePosition(v.Name);
+    if(index!=-1){
+        printf("variable %s already initialized \n",v.Name);
+        exit(0);
+    }
     if (FloatVariableStackCounter + 1 >= MAX_SLOT)
     {
         printf("Memory full \n");
@@ -28,7 +26,7 @@ void addFloatVariable(struct Float v)
 
 int getFloatValuePosition(char *variableName)
 {
-    printf("Variable name %s \n", variableName);
+    //printf("Variable name %s \n", variableName);
     for (int i = 0; (i < MAX_SLOT && i <= FloatVariableStackCounter); i++)
     {
         char *name = FloatVariableTable[i].Name;

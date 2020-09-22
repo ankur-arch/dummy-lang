@@ -1,10 +1,12 @@
-if(2==2){
-    display 1;
+float x = 22 ;
+float x = 22 ; 
+if(222==x){
+    return 1;
     if(11==1){
         display 1.25;
     }
     else if(4==4){
-        display 1.5;
+        return 1.5;
     }
     else{
         display 1.75;

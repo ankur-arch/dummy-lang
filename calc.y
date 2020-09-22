@@ -25,7 +25,7 @@ int firstElseIf = 0;
 %token<s> VARNAME
 %token<f> FNUM
 %token '<' '>' LTE GTE EQ NOT NET AND OR  DISPLAY RETURN 
-%type<s> M S PRINTER 
+%type<s> BLOCK LINE PRINTER 
 %type<f> G CONDITIONALEXPRESSION CONDITION
 %type<s>  EXP EXTRA EEXP
 %type<s>  CONTROL 
@@ -41,28 +41,27 @@ int firstElseIf = 0;
 %left '/'
 
 %%
-Start : M
+Start : BLOCK
       ;
 
-M : S        {;}
-  | M S      {;}
+BLOCK : LINE        {;}
+  | BLOCK LINE      {;}
   | CONTROL  {;}
-  | M CONTROL  {;}
+  | BLOCK CONTROL  {;}
   | CONDITION ';'       {;}        
-  | M CONDITION ';'     {;}
+  | BLOCK CONDITION ';'     {;}
   ; 
 
-S : FLOAT VARNAME '=' E ';'        { struct Float v; v.Name = $2 ; v.Type = $1 ; v.value=$4; addFloatVariable(v); }
+LINE : FLOAT VARNAME '=' E ';'        { struct Float v; v.Name = $2 ; v.Type = $1 ; v.value=$4; addFloatVariable(v); }
   | VARNAME '=' E ';'              { updateFloatVariable($1,$3); }
   | PRINTER ';'            {;}                                                          
   ;
 
-PRINTER  : DISPLAY E  { if(top()==1 ) {  printf(" \n \n  <-------- DISPLAYING : %f ---------------> \n \n",$2); } }
+PRINTER  : DISPLAY E    { if(top()==1 ) {  printf(" \n printed : %f \n",$2); } }
+         | RETURN E    { if(top()==1) {  printf(" \n returned : %f \n",$2); exit(0);  } }
+         | RETURN     { if(top()==1) {  printf(" \n returned \n "); exit(0); } }
          ;
 
-/*
-Previous if else logic 
-*/
 CONTROL : IF '(' CONDITIONALEXPRESSION ')' EXP    {  pop();  };
         | IF '(' CONDITIONALEXPRESSION ')' EXP EXTRA EEXP { pop(); }
         | IF '(' CONDITIONALEXPRESSION ')' EXP  EEXP   { pop(); }
@@ -73,14 +72,14 @@ EXTRA : EXTRA ELSEIF '(' CONDITIONALEXPRESSION ')' EXP    { ; }
       ;
 
 
-EEXP : ELSE {  if(top()==0 && parentAllowed()==1 ){  push(1); } else { push(0); }} '{' M '}' { pop(); }
+EEXP : ELSE {  if(top()==0 && parentAllowed()==1 ){  push(1); } else { push(0); }} '{' BLOCK '}' { pop(); }
      ; 
 
-EXP : '{' M '}'       {  pop();  }   
+EXP : '{' BLOCK '}'       {  pop();  }   
     ;
 
 CONDITIONALEXPRESSION : CONDITION     { 
-                                        printStack(); 
+                                         
                                         int topval = top(); 
                                         int result = (int)($1);  
                                         char * condition = $<s>-1;
@@ -150,7 +149,6 @@ void actionHandler(int stackTop, int conditionResult, char *condition)
     {
         push(conditionResult);
         push(conditionResult);
-        printf(" ***** first if conditions absolute value :: %d and result %d***** \n",  absoluteTop, conditionResult);
     }
     else
     {
@@ -168,7 +166,7 @@ void actionHandler(int stackTop, int conditionResult, char *condition)
                 push(conditionResult);
                 push(conditionResult);
                 elseAllowed = (int)(conditionResult == 1 ? 0 : 1);
-                printf("----------------- IS ELSE ALLOWED %d \n -----------------", elseAllowed);
+                
             }
             else
             {
@@ -187,11 +185,9 @@ void actionHandler(int stackTop, int conditionResult, char *condition)
             }
             else
             {
-                printf("--     hit else \n    --");
                 push(0);
                 elseAllowed = 1;
             }
         }
     }
-    printStack();
 }
