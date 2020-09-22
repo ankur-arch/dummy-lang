@@ -66,12 +66,12 @@ CONTROL : IF '(' CONDITIONALEXPRESSION ')' EXP    {  pop();  };
         | IF '(' CONDITIONALEXPRESSION ')' EXP  EEXP   { pop(); }
         ;
 
-EXTRA : EXTRA ELSEIF '(' CONDITIONALEXPRESSION ')' EXP    { if(top()==0) { printf(" ~~ skipping if else ENDING \n"); }else{ printf(" *** Ended else if \n ");} }  
-      | ELSEIF '(' CONDITIONALEXPRESSION ')' EXP        {  if(top()==0){ printf(" ~~ skipping if else ADDING \n"); }else{ printf(" *** Added else if \n ");}  }
+EXTRA : EXTRA ELSEIF '(' CONDITIONALEXPRESSION ')' EXP    { if(top()==0) {  }else{ printf("*** Ended else if \n ");} }  
+      | ELSEIF '(' CONDITIONALEXPRESSION ')' EXP        {  if(top()==0){  }else{ printf("*** Added else if \n ");}  }
       ;
 
 
-EEXP : ELSE { int topval = top();  if( elseAllowed ){ push(!topval) ; printf("\n ******* ALLOWING ELSE CHECK ****** \n "); } else { push(0); }} '{' M '}' { pop(); }
+EEXP : ELSE { int topval = top(); printStack(); printf("--------------- STARTED ELSE EVALUATION \n --------------"); if( elseAllowed && topval == 0){ pop() ; push(!topval) ; printf("\n ******* ALLOWING ELSE CHECK ****** \n "); } else { push(0); }} '{' M '}' { pop(); }
      ; 
 
 EXP : '{' M '}'       {  pop();  }   

@@ -77,10 +77,10 @@ float getFloatVariableValue(char *variableName)
 
 void push(int status){
     if(stackPosition>=MAX_SLOT) {
-        printf("Stack Overflow \n");
+        //printf("Stack Overflow \n");
         return;
     }
-    printf("Pushed onto stack %d \n", status);
+    //printf("Pushed onto stack %d \n", status);
     stack[stackPosition++] = status; 
 }
 
@@ -105,17 +105,17 @@ void pop(){
         return;
     }
     int status = stack[stackPosition-1];
-    printf("Popped from stack %d \n",status);
+    //printf("Popped from stack %d \n",status);
     stack[stackPosition--] = -1; 
 }
 
 int top(){
     if(stackPosition == -1) {
-        printf("Top of the stack is %d and the stack position is %d \n", -1, stackPosition);
+        //printf("Top of the stack is %d and the stack position is %d \n", -1, stackPosition);
         return -1;
     };
     int temp = stack[stackPosition-1];
-    printf("Top of the stack is %d and the stack position is %d \n", temp,  stackPosition );
+    //printf("Top of the stack is %d and the stack position is %d \n", temp,  stackPosition );
     return temp;
 }
 

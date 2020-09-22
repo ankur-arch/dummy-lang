@@ -1382,19 +1382,19 @@ yyreduce:
 
   case 16:
 #line 69 "calc.y" /* yacc.c:1646  */
-    { if(top()==0) { printf(" ~~ skipping if else ENDING \n"); }else{ printf(" *** Ended else if \n ");} }
+    { if(top()==0) {  }else{ printf("*** Ended else if \n ");} }
 #line 1387 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
 #line 70 "calc.y" /* yacc.c:1646  */
-    {  if(top()==0){ printf(" ~~ skipping if else ADDING \n"); }else{ printf(" *** Added else if \n ");}  }
+    {  if(top()==0){  }else{ printf("*** Added else if \n ");}  }
 #line 1393 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
 #line 74 "calc.y" /* yacc.c:1646  */
-    { int topval = top();  if( elseAllowed ){ push(!topval) ; printf("\n ******* ALLOWING ELSE CHECK ****** \n "); } else { push(0); }}
+    { int topval = top(); printStack(); printf("--------------- STARTED ELSE EVALUATION \n --------------"); if( elseAllowed && topval == 0){ pop() ; push(!topval) ; printf("\n ******* ALLOWING ELSE CHECK ****** \n "); } else { push(0); }}
 #line 1399 "y.tab.c" /* yacc.c:1646  */
     break;
 
