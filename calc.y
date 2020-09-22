@@ -9,6 +9,7 @@ int FloatVariableStackCounter = 0;
 int yydebug = 1;    
 void yyerror(char *msg);
 int elseAllowed = 0; 
+int firstElseIf = 0;
 %}
 
 
@@ -55,7 +56,7 @@ S : FLOAT VARNAME '=' E ';'        { struct Float v; v.Name = $2 ; v.Type = $1 ;
   | PRINTER ';'            {;}                                                          
   ;
 
-PRINTER  : DISPLAY E  { if(top()==1 ) { printf("Inside display \n"); top() ; printf(" \n \n  <-------- DISPLAYING : %f \n \n",$2); } }
+PRINTER  : DISPLAY E  { if(top()==1 ) {  printf(" \n \n  <-------- DISPLAYING : %f \n \n",$2); } }
          ;
 
 /*
@@ -66,8 +67,8 @@ CONTROL : IF '(' CONDITIONALEXPRESSION ')' EXP    {  pop();  };
         | IF '(' CONDITIONALEXPRESSION ')' EXP  EEXP   { pop(); }
         ;
 
-EXTRA : EXTRA ELSEIF '(' CONDITIONALEXPRESSION ')' EXP    { if(top()==0) {  }else{ printf("*** Ended else if \n ");} }  
-      | ELSEIF '(' CONDITIONALEXPRESSION ')' EXP        {  if(top()==0){  }else{ printf("*** Added else if \n ");}  }
+EXTRA : EXTRA ELSEIF '(' CONDITIONALEXPRESSION ')' EXP    { if(top()==0) {  }else{ } }  
+      | ELSEIF '(' CONDITIONALEXPRESSION ')' EXP        {  if(top()==0){  }else{ }  }
       ;
 
 
@@ -77,21 +78,27 @@ EEXP : ELSE { int topval = top(); printStack(); printf("--------------- STARTED 
 EXP : '{' M '}'       {  pop();  }   
     ;
 
-CONDITIONALEXPRESSION : CONDITION     { printStack(); int topval = top(); int result = (int)($1); elseAllowed = !result ; char * condition = $<s>-1; if(topval==1){if(isIF(condition)==1){push(result);push(result);}else{push(0);}}else{if(isIF(condition)==1 && ( topval==-1 || topval==1 )){ push(result); push(result); }else if(isIF(condition)==1 && topval == 0){ push(0); push(0);}else if(isELSEIF(condition)==1 && topval == 0){ pop(); push(result); push(result);}else{push(0);}}  }
+CONDITIONALEXPRESSION : CONDITION     { printStack(); int topval = top(); 
+int result = (int)($1); elseAllowed = !result ; char * condition = $<s>-1;
+ if(topval==1){if(isIF(condition)==1){push(result);push(result);}else{push(0);}}
+ else{if(isIF(condition)==1 && ( topval==-1 || topval==1 )){ push(result); push(result); }
+ else if(isIF(condition)==1 && topval == 0){ push(0); push(0);}
+ else if(isELSEIF(condition)==1 && topval == 0 ){ pop(); 
+ push(result); push(result);}else{ push(0);} }}
                       ;
 
-CONDITION : CONDITION OR CONDITION  {  int result = $1 || $3 ; printf(" Condition --> expression %d \n", result); $$ = $1 || $3; }
-          | CONDITION AND CONDITION {  int result = $1 && $3 ; printf(" Condition --> expression %d \n", result); $$ = $1 && $3; }
-          | NOT CONDITION           {  int result = $2 == 0 ? 1 : 0 ; printf(" Condition --> expression %d \n", result); $$ = ($2 == 0 ? 1 : 0) ; } 
+CONDITION : CONDITION OR CONDITION  {  int result = $1 || $3 ;  $$ = $1 || $3; }
+          | CONDITION AND CONDITION {  int result = $1 && $3 ;  $$ = $1 && $3; }
+          | NOT CONDITION           {  int result = $2 == 0 ? 1 : 0 ; $$ = ($2 == 0 ? 1 : 0) ; } 
           | G
           ;                                         
 
-G : G '<' G   { printf(" -> hit lt \n"); int result = $1 < $3 ; printf("%d \n", result); $$ = (int)($1 < $3); }
-  | G '>' G   { printf(" -> hit gt \n");  int result = $1 > $3 ; printf("%d \n", result); $$ = $1 > $3; }
-  | G GTE G   { printf(" -> hit >= \n");  int result = $1 >= $3 ; printf("%d \n", result); $$ = $1 >= $3; }
-  | G LTE G   {  printf(" -> hit <= \n");  int result = $1 <= $3 ; printf("%d \n", result); $$ = $1 <= $3; }
-  | G NET G   { printf(" -> hit != \n"); int result = $1 != $3 ; printf("%d \n", result); $$ = $1 != $3; }
-  | G EQ G    { printf(" -> hit == \n");  int result = $1 == $3 ; printf("%d \n", result); $$ = $1 == $3; } 
+G : G '<' G   {  int result = $1 < $3 ;  $$ = (int)($1 < $3); }
+  | G '>' G   {  int result = $1 > $3 ;  $$ = $1 > $3; }
+  | G GTE G   {  int result = $1 >= $3 ;  $$ = $1 >= $3; }
+  | G LTE G   {  int result = $1 <= $3 ;  $$ = $1 <= $3; }
+  | G NET G   {  int result = $1 != $3 ;  $$ = $1 != $3; }
+  | G EQ G    {  int result = $1 == $3 ;  $$ = $1 == $3; } 
   | E         {  $$ = $1; }
   ;
 
