@@ -8,6 +8,7 @@ int stackPosition = -1 ;
 int FloatVariableStackCounter = 0;
 int yydebug = 1;    
 void yyerror(char *msg);
+int elseAllowed = 0; 
 %}
 
 
@@ -70,13 +71,13 @@ EXTRA : EXTRA ELSEIF '(' CONDITIONALEXPRESSION ')' EXP    { if(top()==0) { print
       ;
 
 
-EEXP : ELSE { if( top() == 0 ){ push(1) ; printf("\n ******* ALLOWING ELSE CHECK ****** \n "); } else { push(0); }} '{' M '}' { pop(); }
+EEXP : ELSE { int topval = top();  if( elseAllowed ){ push(!topval) ; printf("\n ******* ALLOWING ELSE CHECK ****** \n "); } else { push(0); }} '{' M '}' { pop(); }
      ; 
 
 EXP : '{' M '}'       {  pop();  }   
     ;
 
-CONDITIONALEXPRESSION : CONDITION     { printStack(); int topval = top(); int result = (int)($1); char * condition = $<s>-1; if(topval==1){if(isIF(condition)==1){push(0);push(0);}else{push(0);}}else{if(isIF(condition)==1 && ( topval==-1 || topval==1 )){ push(result); push(result); }else if(isIF(condition)==1 && topval == 0){ push(0); push(0);}else if(isELSEIF(condition)==1 && topval == 0){ pop(); push(result); push(result);}else{push(0);}}  }
+CONDITIONALEXPRESSION : CONDITION     { printStack(); int topval = top(); int result = (int)($1); elseAllowed = !result ; char * condition = $<s>-1; if(topval==1){if(isIF(condition)==1){push(result);push(result);}else{push(0);}}else{if(isIF(condition)==1 && ( topval==-1 || topval==1 )){ push(result); push(result); }else if(isIF(condition)==1 && topval == 0){ push(0); push(0);}else if(isELSEIF(condition)==1 && topval == 0){ pop(); push(result); push(result);}else{push(0);}}  }
                       ;
 
 CONDITION : CONDITION OR CONDITION  {  int result = $1 || $3 ; printf(" Condition --> expression %d \n", result); $$ = $1 || $3; }
@@ -91,7 +92,7 @@ G : G '<' G   { printf(" -> hit lt \n"); int result = $1 < $3 ; printf("%d \n", 
   | G LTE G   {  printf(" -> hit <= \n");  int result = $1 <= $3 ; printf("%d \n", result); $$ = $1 <= $3; }
   | G NET G   { printf(" -> hit != \n"); int result = $1 != $3 ; printf("%d \n", result); $$ = $1 != $3; }
   | G EQ G    { printf(" -> hit == \n");  int result = $1 == $3 ; printf("%d \n", result); $$ = $1 == $3; } 
-  | E         { printf(" ---> Reached E with stack top value :  %d \n", top()) ; $$ = $1; }
+  | E         {  $$ = $1; }
   ;
 
 

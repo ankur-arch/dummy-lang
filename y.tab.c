@@ -73,8 +73,9 @@ int stackPosition = -1 ;
 int FloatVariableStackCounter = 0;
 int yydebug = 1;    
 void yyerror(char *msg);
+int elseAllowed = 0; 
 
-#line 78 "y.tab.c" /* yacc.c:339  */
+#line 79 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -148,13 +149,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 14 "calc.y" /* yacc.c:355  */
+#line 15 "calc.y" /* yacc.c:355  */
 
    float f;
    int i;
    char* s;
 
-#line 158 "y.tab.c" /* yacc.c:355  */
+#line 159 "y.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -171,7 +172,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 175 "y.tab.c" /* yacc.c:358  */
+#line 176 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -470,11 +471,11 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    41,    41,    44,    45,    46,    47,    48,    49,    52,
-      53,    54,    57,    63,    64,    65,    68,    69,    73,    73,
-      76,    79,    82,    83,    84,    85,    88,    89,    90,    91,
-      92,    93,    94,    98,    99,   100,   103,   104,   105,   108,
-     109,   110,   113,   114
+       0,    42,    42,    45,    46,    47,    48,    49,    50,    53,
+      54,    55,    58,    64,    65,    66,    69,    70,    74,    74,
+      77,    80,    83,    84,    85,    86,    89,    90,    91,    92,
+      93,    94,    95,    99,   100,   101,   104,   105,   106,   109,
+     110,   111,   114,   115
 };
 #endif
 
@@ -1302,247 +1303,247 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 44 "calc.y" /* yacc.c:1646  */
+#line 45 "calc.y" /* yacc.c:1646  */
     {;}
-#line 1308 "y.tab.c" /* yacc.c:1646  */
+#line 1309 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 45 "calc.y" /* yacc.c:1646  */
+#line 46 "calc.y" /* yacc.c:1646  */
     {;}
-#line 1314 "y.tab.c" /* yacc.c:1646  */
+#line 1315 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 46 "calc.y" /* yacc.c:1646  */
+#line 47 "calc.y" /* yacc.c:1646  */
     {;}
-#line 1320 "y.tab.c" /* yacc.c:1646  */
+#line 1321 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 47 "calc.y" /* yacc.c:1646  */
+#line 48 "calc.y" /* yacc.c:1646  */
     {;}
-#line 1326 "y.tab.c" /* yacc.c:1646  */
+#line 1327 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 48 "calc.y" /* yacc.c:1646  */
+#line 49 "calc.y" /* yacc.c:1646  */
     {;}
-#line 1332 "y.tab.c" /* yacc.c:1646  */
+#line 1333 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 49 "calc.y" /* yacc.c:1646  */
+#line 50 "calc.y" /* yacc.c:1646  */
     {;}
-#line 1338 "y.tab.c" /* yacc.c:1646  */
+#line 1339 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 52 "calc.y" /* yacc.c:1646  */
+#line 53 "calc.y" /* yacc.c:1646  */
     { struct Float v; v.Name = (yyvsp[-3].s) ; v.Type = (yyvsp[-4].s) ; v.value=(yyvsp[-1].f); addFloatVariable(v); }
-#line 1344 "y.tab.c" /* yacc.c:1646  */
+#line 1345 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 53 "calc.y" /* yacc.c:1646  */
+#line 54 "calc.y" /* yacc.c:1646  */
     { updateFloatVariable((yyvsp[-3].s),(yyvsp[-1].f)); }
-#line 1350 "y.tab.c" /* yacc.c:1646  */
+#line 1351 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 54 "calc.y" /* yacc.c:1646  */
+#line 55 "calc.y" /* yacc.c:1646  */
     {;}
-#line 1356 "y.tab.c" /* yacc.c:1646  */
+#line 1357 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 57 "calc.y" /* yacc.c:1646  */
+#line 58 "calc.y" /* yacc.c:1646  */
     { if(top()==1 ) { printf("Inside display \n"); top() ; printf(" \n \n  <-------- DISPLAYING : %f \n \n",(yyvsp[0].f)); } }
-#line 1362 "y.tab.c" /* yacc.c:1646  */
+#line 1363 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 63 "calc.y" /* yacc.c:1646  */
+#line 64 "calc.y" /* yacc.c:1646  */
     {  pop();  }
-#line 1368 "y.tab.c" /* yacc.c:1646  */
+#line 1369 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 64 "calc.y" /* yacc.c:1646  */
+#line 65 "calc.y" /* yacc.c:1646  */
     { pop(); }
-#line 1374 "y.tab.c" /* yacc.c:1646  */
+#line 1375 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 65 "calc.y" /* yacc.c:1646  */
+#line 66 "calc.y" /* yacc.c:1646  */
     { pop(); }
-#line 1380 "y.tab.c" /* yacc.c:1646  */
+#line 1381 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 68 "calc.y" /* yacc.c:1646  */
+#line 69 "calc.y" /* yacc.c:1646  */
     { if(top()==0) { printf(" ~~ skipping if else ENDING \n"); }else{ printf(" *** Ended else if \n ");} }
-#line 1386 "y.tab.c" /* yacc.c:1646  */
+#line 1387 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 69 "calc.y" /* yacc.c:1646  */
+#line 70 "calc.y" /* yacc.c:1646  */
     {  if(top()==0){ printf(" ~~ skipping if else ADDING \n"); }else{ printf(" *** Added else if \n ");}  }
-#line 1392 "y.tab.c" /* yacc.c:1646  */
+#line 1393 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 73 "calc.y" /* yacc.c:1646  */
-    { if( top() == 0 ){ push(1) ; printf("\n ******* ALLOWING ELSE CHECK ****** \n "); } else { push(0); }}
-#line 1398 "y.tab.c" /* yacc.c:1646  */
+#line 74 "calc.y" /* yacc.c:1646  */
+    { int topval = top();  if( elseAllowed ){ push(!topval) ; printf("\n ******* ALLOWING ELSE CHECK ****** \n "); } else { push(0); }}
+#line 1399 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 73 "calc.y" /* yacc.c:1646  */
+#line 74 "calc.y" /* yacc.c:1646  */
     { pop(); }
-#line 1404 "y.tab.c" /* yacc.c:1646  */
+#line 1405 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 76 "calc.y" /* yacc.c:1646  */
+#line 77 "calc.y" /* yacc.c:1646  */
     {  pop();  }
-#line 1410 "y.tab.c" /* yacc.c:1646  */
+#line 1411 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 79 "calc.y" /* yacc.c:1646  */
-    { printStack(); int topval = top(); int result = (int)((yyvsp[0].f)); char * condition = (yyvsp[(-1) - (1)].s); if(topval==1){if(isIF(condition)==1){push(0);push(0);}else{push(0);}}else{if(isIF(condition)==1 && ( topval==-1 || topval==1 )){ push(result); push(result); }else if(isIF(condition)==1 && topval == 0){ push(0); push(0);}else if(isELSEIF(condition)==1 && topval == 0){ pop(); push(result); push(result);}else{push(0);}}  }
-#line 1416 "y.tab.c" /* yacc.c:1646  */
+#line 80 "calc.y" /* yacc.c:1646  */
+    { printStack(); int topval = top(); int result = (int)((yyvsp[0].f)); elseAllowed = !result ; char * condition = (yyvsp[(-1) - (1)].s); if(topval==1){if(isIF(condition)==1){push(result);push(result);}else{push(0);}}else{if(isIF(condition)==1 && ( topval==-1 || topval==1 )){ push(result); push(result); }else if(isIF(condition)==1 && topval == 0){ push(0); push(0);}else if(isELSEIF(condition)==1 && topval == 0){ pop(); push(result); push(result);}else{push(0);}}  }
+#line 1417 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 82 "calc.y" /* yacc.c:1646  */
+#line 83 "calc.y" /* yacc.c:1646  */
     {  int result = (yyvsp[-2].f) || (yyvsp[0].f) ; printf(" Condition --> expression %d \n", result); (yyval.f) = (yyvsp[-2].f) || (yyvsp[0].f); }
-#line 1422 "y.tab.c" /* yacc.c:1646  */
+#line 1423 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 83 "calc.y" /* yacc.c:1646  */
+#line 84 "calc.y" /* yacc.c:1646  */
     {  int result = (yyvsp[-2].f) && (yyvsp[0].f) ; printf(" Condition --> expression %d \n", result); (yyval.f) = (yyvsp[-2].f) && (yyvsp[0].f); }
-#line 1428 "y.tab.c" /* yacc.c:1646  */
+#line 1429 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 84 "calc.y" /* yacc.c:1646  */
+#line 85 "calc.y" /* yacc.c:1646  */
     {  int result = (yyvsp[0].f) == 0 ? 1 : 0 ; printf(" Condition --> expression %d \n", result); (yyval.f) = ((yyvsp[0].f) == 0 ? 1 : 0) ; }
-#line 1434 "y.tab.c" /* yacc.c:1646  */
+#line 1435 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 88 "calc.y" /* yacc.c:1646  */
+#line 89 "calc.y" /* yacc.c:1646  */
     { printf(" -> hit lt \n"); int result = (yyvsp[-2].f) < (yyvsp[0].f) ; printf("%d \n", result); (yyval.f) = (int)((yyvsp[-2].f) < (yyvsp[0].f)); }
-#line 1440 "y.tab.c" /* yacc.c:1646  */
+#line 1441 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 89 "calc.y" /* yacc.c:1646  */
+#line 90 "calc.y" /* yacc.c:1646  */
     { printf(" -> hit gt \n");  int result = (yyvsp[-2].f) > (yyvsp[0].f) ; printf("%d \n", result); (yyval.f) = (yyvsp[-2].f) > (yyvsp[0].f); }
-#line 1446 "y.tab.c" /* yacc.c:1646  */
+#line 1447 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 90 "calc.y" /* yacc.c:1646  */
+#line 91 "calc.y" /* yacc.c:1646  */
     { printf(" -> hit >= \n");  int result = (yyvsp[-2].f) >= (yyvsp[0].f) ; printf("%d \n", result); (yyval.f) = (yyvsp[-2].f) >= (yyvsp[0].f); }
-#line 1452 "y.tab.c" /* yacc.c:1646  */
+#line 1453 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 91 "calc.y" /* yacc.c:1646  */
+#line 92 "calc.y" /* yacc.c:1646  */
     {  printf(" -> hit <= \n");  int result = (yyvsp[-2].f) <= (yyvsp[0].f) ; printf("%d \n", result); (yyval.f) = (yyvsp[-2].f) <= (yyvsp[0].f); }
-#line 1458 "y.tab.c" /* yacc.c:1646  */
+#line 1459 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 92 "calc.y" /* yacc.c:1646  */
+#line 93 "calc.y" /* yacc.c:1646  */
     { printf(" -> hit != \n"); int result = (yyvsp[-2].f) != (yyvsp[0].f) ; printf("%d \n", result); (yyval.f) = (yyvsp[-2].f) != (yyvsp[0].f); }
-#line 1464 "y.tab.c" /* yacc.c:1646  */
+#line 1465 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 93 "calc.y" /* yacc.c:1646  */
+#line 94 "calc.y" /* yacc.c:1646  */
     { printf(" -> hit == \n");  int result = (yyvsp[-2].f) == (yyvsp[0].f) ; printf("%d \n", result); (yyval.f) = (yyvsp[-2].f) == (yyvsp[0].f); }
-#line 1470 "y.tab.c" /* yacc.c:1646  */
+#line 1471 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 94 "calc.y" /* yacc.c:1646  */
-    { printf(" ---> Reached E with stack top value :  %d \n", top()) ; (yyval.f) = (yyvsp[0].f); }
-#line 1476 "y.tab.c" /* yacc.c:1646  */
+#line 95 "calc.y" /* yacc.c:1646  */
+    {  (yyval.f) = (yyvsp[0].f); }
+#line 1477 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 98 "calc.y" /* yacc.c:1646  */
+#line 99 "calc.y" /* yacc.c:1646  */
     {(yyval.f) = (yyvsp[-2].f) + (yyvsp[0].f);}
-#line 1482 "y.tab.c" /* yacc.c:1646  */
+#line 1483 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 99 "calc.y" /* yacc.c:1646  */
+#line 100 "calc.y" /* yacc.c:1646  */
     {(yyval.f) = (yyvsp[-2].f) - (yyvsp[0].f);}
-#line 1488 "y.tab.c" /* yacc.c:1646  */
+#line 1489 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 100 "calc.y" /* yacc.c:1646  */
+#line 101 "calc.y" /* yacc.c:1646  */
     {(yyval.f) = (yyvsp[0].f);}
-#line 1494 "y.tab.c" /* yacc.c:1646  */
+#line 1495 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 103 "calc.y" /* yacc.c:1646  */
+#line 104 "calc.y" /* yacc.c:1646  */
     {(yyval.f) = (yyvsp[-2].f) * (yyvsp[0].f);}
-#line 1500 "y.tab.c" /* yacc.c:1646  */
+#line 1501 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 104 "calc.y" /* yacc.c:1646  */
+#line 105 "calc.y" /* yacc.c:1646  */
     {(yyval.f) = (yyvsp[-2].f)/(yyvsp[0].f);}
-#line 1506 "y.tab.c" /* yacc.c:1646  */
+#line 1507 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 105 "calc.y" /* yacc.c:1646  */
+#line 106 "calc.y" /* yacc.c:1646  */
     {(yyval.f) = (yyvsp[0].f);}
-#line 1512 "y.tab.c" /* yacc.c:1646  */
+#line 1513 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 108 "calc.y" /* yacc.c:1646  */
+#line 109 "calc.y" /* yacc.c:1646  */
     {(yyval.f) = ((yyvsp[-1].f));}
-#line 1518 "y.tab.c" /* yacc.c:1646  */
+#line 1519 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 109 "calc.y" /* yacc.c:1646  */
+#line 110 "calc.y" /* yacc.c:1646  */
     {(yyval.f) = -1*(yyvsp[0].f);}
-#line 1524 "y.tab.c" /* yacc.c:1646  */
+#line 1525 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 110 "calc.y" /* yacc.c:1646  */
+#line 111 "calc.y" /* yacc.c:1646  */
     {(yyval.f) = (yyvsp[0].f);}
-#line 1530 "y.tab.c" /* yacc.c:1646  */
+#line 1531 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 113 "calc.y" /* yacc.c:1646  */
+#line 114 "calc.y" /* yacc.c:1646  */
     {(yyval.f) = (yyvsp[0].f);}
-#line 1536 "y.tab.c" /* yacc.c:1646  */
+#line 1537 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 114 "calc.y" /* yacc.c:1646  */
+#line 115 "calc.y" /* yacc.c:1646  */
     {(yyval.f) = getFloatVariableValue((yyvsp[0].s)); }
-#line 1542 "y.tab.c" /* yacc.c:1646  */
+#line 1543 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1546 "y.tab.c" /* yacc.c:1646  */
+#line 1547 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1770,7 +1771,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 116 "calc.y" /* yacc.c:1906  */
+#line 117 "calc.y" /* yacc.c:1906  */
 
 
 void yyerror(char *msg){
