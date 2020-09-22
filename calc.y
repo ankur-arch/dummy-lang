@@ -68,12 +68,12 @@ CONTROL : IF '(' CONDITIONALEXPRESSION ')' EXP    {  pop();  };
         | IF '(' CONDITIONALEXPRESSION ')' EXP  EEXP   { pop(); }
         ;
 
-EXTRA : EXTRA ELSEIF '(' CONDITIONALEXPRESSION ')' EXP    { if(top()==0) {  }else{ } }  
-      | ELSEIF '(' CONDITIONALEXPRESSION ')' EXP        {  if(top()==0){  }else{ }  }
+EXTRA : EXTRA ELSEIF '(' CONDITIONALEXPRESSION ')' EXP    { ; }  
+      | ELSEIF '(' CONDITIONALEXPRESSION ')' EXP        {  ; }
       ;
 
 
-EEXP : ELSE {  if( elseAllowed == 1 && top() == 0 ){ push(1); } else { push(0); }} '{' M '}' { pop(); }
+EEXP : ELSE {  if(top()==0 && parentAllowed()==1 ){  push(1); } else { push(0); }} '{' M '}' { pop(); }
      ; 
 
 EXP : '{' M '}'       {  pop();  }   
@@ -167,7 +167,7 @@ void actionHandler(int stackTop, int conditionResult, char *condition)
                 pop();
                 push(conditionResult);
                 push(conditionResult);
-                elseAllowed = conditionResult == 1 ? 0 : 1;
+                elseAllowed = (int)(conditionResult == 1 ? 0 : 1);
                 printf("----------------- IS ELSE ALLOWED %d \n -----------------", elseAllowed);
             }
             else
@@ -193,4 +193,5 @@ void actionHandler(int stackTop, int conditionResult, char *condition)
             }
         }
     }
+    printStack();
 }

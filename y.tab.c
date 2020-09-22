@@ -1384,19 +1384,19 @@ yyreduce:
 
   case 16:
 #line 71 "calc.y" /* yacc.c:1646  */
-    { if(top()==0) {  }else{ } }
+    { ; }
 #line 1389 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
 #line 72 "calc.y" /* yacc.c:1646  */
-    {  if(top()==0){  }else{ }  }
+    {  ; }
 #line 1395 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
 #line 76 "calc.y" /* yacc.c:1646  */
-    {  if( elseAllowed == 1 && top() == 0 ){ push(1); } else { push(0); }}
+    {  if(top()==0 && parentAllowed()==1 ){  push(1); } else { push(0); }}
 #line 1401 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1825,7 +1825,8 @@ void actionHandler(int stackTop, int conditionResult, char *condition)
                 pop();
                 push(conditionResult);
                 push(conditionResult);
-                elseAllowed = conditionResult == 1 ? 0 : 1;
+                elseAllowed = (int)(conditionResult == 1 ? 0 : 1);
+                printf("----------------- IS ELSE ALLOWED %d \n -----------------", elseAllowed);
             }
             else
             {
@@ -1850,4 +1851,5 @@ void actionHandler(int stackTop, int conditionResult, char *condition)
             }
         }
     }
+    printStack();
 }

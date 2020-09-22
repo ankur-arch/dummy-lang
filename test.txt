@@ -22,7 +22,7 @@ else if(3==4){
         display 2.75;
     }
 }
-else if( 4==44 ){
+else if( 4==4 ){
     display 3;
     if(1==12){
         display 3.25;
