@@ -65,3 +65,24 @@ THENSTMT : '{' RETURN E ';''}'   { int resultif = (int)($<f>-1) ;  printf("insid
 
 OTHERSTMT : '{' RETURN E ';' '}' ';'  { int resultif = (int)($<f>-3) ; top();  printf("the address inside the ELSE statement %p  with the value being %d\n",  &$<f>-3, resultif ); if(resultif != 1){ printf("The returned else value %f \n",$3); }  }            
           ;
+
+// if else conditional action 
+
+if(topval==1){if(isIF(condition)==1){push(result);push(result);}else{push(0);}}
+ else{if(isIF(condition)==1 && ( topval==-1 || topval==1 )){ push(result); push(result); }
+ else if(isIF(condition)==1 && topval == 0){ push(0); push(0);}
+ else if(isELSEIF(condition)==1 && topval == 0 ){ pop(); 
+ push(result); push(result);}else{ push(0);} }
+
+
+
+     //if stack top is zero
+    // and is IF push zero zero and statement is nested and elseAllowed = 0
+    // and is IF ELSE and parentAllowed
+    // pop() and push(result) and push(result) and elseAllowed =!result
+    //and is IF ELSE and !parentAllowed
+    // push(0) and elseAllowed = 0
+    // else stack top is one
+    // and is IF push result result and statement is nested and elseAllowed = !result
+    // and is IF ELSE
+    // push(0) and elseAllowed = 0

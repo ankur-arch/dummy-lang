@@ -8,7 +8,8 @@ int stackPosition = -1 ;
 int FloatVariableStackCounter = 0;
 int yydebug = 1;    
 void yyerror(char *msg);
-int elseAllowed = 0; 
+int elseAllowed = 1;
+void actionHandler(int stackTop, int conditionResult, char *condition); 
 int firstElseIf = 0;
 %}
 
@@ -56,7 +57,7 @@ S : FLOAT VARNAME '=' E ';'        { struct Float v; v.Name = $2 ; v.Type = $1 ;
   | PRINTER ';'            {;}                                                          
   ;
 
-PRINTER  : DISPLAY E  { if(top()==1 ) {  printf(" \n \n  <-------- DISPLAYING : %f \n \n",$2); } }
+PRINTER  : DISPLAY E  { if(top()==1 ) {  printf(" \n \n  <-------- DISPLAYING : %f ---------------> \n \n",$2); } }
          ;
 
 /*
@@ -72,19 +73,19 @@ EXTRA : EXTRA ELSEIF '(' CONDITIONALEXPRESSION ')' EXP    { if(top()==0) {  }els
       ;
 
 
-EEXP : ELSE { int topval = top(); printStack(); printf("--------------- STARTED ELSE EVALUATION \n --------------"); if( elseAllowed && topval == 0){ pop() ; push(!topval) ; printf("\n ******* ALLOWING ELSE CHECK ****** \n "); } else { push(0); }} '{' M '}' { pop(); }
+EEXP : ELSE {  if( elseAllowed == 1 && top() == 0 ){ push(1); } else { push(0); }} '{' M '}' { pop(); }
      ; 
 
 EXP : '{' M '}'       {  pop();  }   
     ;
 
-CONDITIONALEXPRESSION : CONDITION     { printStack(); int topval = top(); 
-int result = (int)($1); elseAllowed = !result ; char * condition = $<s>-1;
- if(topval==1){if(isIF(condition)==1){push(result);push(result);}else{push(0);}}
- else{if(isIF(condition)==1 && ( topval==-1 || topval==1 )){ push(result); push(result); }
- else if(isIF(condition)==1 && topval == 0){ push(0); push(0);}
- else if(isELSEIF(condition)==1 && topval == 0 ){ pop(); 
- push(result); push(result);}else{ push(0);} }}
+CONDITIONALEXPRESSION : CONDITION     { 
+                                        printStack(); 
+                                        int topval = top(); 
+                                        int result = (int)($1);  
+                                        char * condition = $<s>-1;
+                                        actionHandler(topval, result , condition); 
+                                      }
                       ;
 
 CONDITION : CONDITION OR CONDITION  {  int result = $1 || $3 ;  $$ = $1 || $3; }
@@ -138,4 +139,58 @@ int main(){
 
     yyparse();
     return 0;
+}
+
+
+void actionHandler(int stackTop, int conditionResult, char *condition)
+{
+    int absoluteTop = stack[0];
+    
+    if (absoluteTop == -1)
+    {
+        push(conditionResult);
+        push(conditionResult);
+        printf(" ***** first if conditions absolute value :: %d and result %d***** \n",  absoluteTop, conditionResult);
+    }
+    else
+    {
+        if (stackTop == 0)
+        {
+            if (isIF(condition) == 1)
+            {
+                push(0);
+                push(0);
+                elseAllowed = 0;
+            }
+            else if (top() == 0 && isELSEIF(condition) == 1 && parentAllowed() == 1)
+            {   
+                pop();
+                push(conditionResult);
+                push(conditionResult);
+                elseAllowed = conditionResult == 1 ? 0 : 1;
+                printf("----------------- IS ELSE ALLOWED %d \n -----------------", elseAllowed);
+            }
+            else
+            {
+                push(0);
+                // 
+                elseAllowed == 1;
+            }
+        }
+        else
+        {
+            if (isIF(condition) == 1)
+            {
+                push(conditionResult);
+                push(conditionResult);
+                elseAllowed = !conditionResult;
+            }
+            else
+            {
+                printf("--     hit else \n    --");
+                push(0);
+                elseAllowed = 1;
+            }
+        }
+    }
 }

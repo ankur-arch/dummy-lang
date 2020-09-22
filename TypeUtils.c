@@ -120,6 +120,8 @@ int top(){
 }
 
 
+
+
 // additional checks 
 
 int isIF(char *name){
@@ -132,6 +134,22 @@ int isIF(char *name){
 int isELSEIF(char *name){
     if(strcmp(name, "else if")==0){
         return 1;
+    }
+    return 0;
+}
+
+
+int parentAllowed()
+{
+    
+    if (stackPosition == 0)
+    {
+        return 1;
+    }
+    if (stackPosition >= 2)
+    {
+        int temp = stackPosition - 2;
+        return stack[temp];
     }
     return 0;
 }

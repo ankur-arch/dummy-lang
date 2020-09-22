@@ -10,24 +10,24 @@ if(2==12){
         display 1.75;
     }
 }
-else if(4==4){
+else if(3==4){
     display 2;
     if(1==1){
         display 2.25;
     }
-    else if(44==4){
+    else if(4==4){
         display 2.5;
     }
     else{
         display 2.75;
     }
 }
-else if( 4==41 ){
+else if( 4==44 ){
     display 3;
-    if(1==1){
+    if(1==12){
         display 3.25;
     }
-    else if(44==4){
+    else if(42==4){
         display 3.5;
     }
     else{
@@ -36,7 +36,7 @@ else if( 4==41 ){
 }
 else{
     display 4;
-    if(1==1){
+    if(11==1){
         display 4.25;
     }
     else if(44==4){

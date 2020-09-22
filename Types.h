@@ -12,7 +12,7 @@ void addFloatVariable(struct Float v);
 int getFloatValuePosition(char *variableName);
 void updateFloatVariable(char *variableName, float newValue);
 float getFloatVariableValue(char *variableName);
-
+int parentAllowed();
 int stack[MAX_SLOT];
 extern int stackPosition;
 int top();
