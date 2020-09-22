@@ -19,3 +19,5 @@ int top();
 void push(int status);
 void pop();
 void printStack();
+int isIF(char *name);
+int isELSEIF(char *name);

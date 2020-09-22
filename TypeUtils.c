@@ -3,6 +3,7 @@
 #include <string.h>
 #include "Types.h"
 
+
 void addFloatVariable(struct Float v)
 {
     printf("%s is the string and %f is the number \n", v.Name, v.value);
@@ -116,4 +117,21 @@ int top(){
     int temp = stack[stackPosition-1];
     printf("Top of the stack is %d and the stack position is %d \n", temp,  stackPosition );
     return temp;
+}
+
+
+// additional checks 
+
+int isIF(char *name){
+    if(strcmp(name, "if")==0){
+        return 1;
+    }
+    return 0;
+}
+
+int isELSEIF(char *name){
+    if(strcmp(name, "else if")==0){
+        return 1;
+    }
+    return 0;
 }
