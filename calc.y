@@ -11,6 +11,8 @@ void yyerror(char *msg);
 int elseAllowed = 1;
 void actionHandler(int stackTop, int conditionResult, char *condition); 
 int firstElseIf = 0;
+int functionReturnTypeNumber = -1 ; 
+int functionReturnTypeVoid = -1 ; 
 %}
 
 
@@ -21,7 +23,7 @@ int firstElseIf = 0;
 }
 
 %start Start
-%token<s> FLOAT IF ELSE ELSEIF
+%token<s> VOID FLOAT IF ELSE ELSEIF
 %token<s> VARNAME
 %token<f> FNUM
 %token '<' '>' LTE GTE EQ NOT NET AND OR  DISPLAY RETURN 
@@ -42,6 +44,8 @@ int firstElseIf = 0;
 
 %%
 Start : BLOCK
+      | FLOAT  VARNAME '(' { functionReturnTypeNumber = 1 ; } ')' '{' BLOCK '}' { if(functionReturnTypeNumber != 0 ){ printf("\n Error Function does not return any value \n")  ; exit(0); };  functionReturnTypeNumber = -1 ; }
+      | VOID  VARNAME '(' { functionReturnTypeVoid = 1 ; } ')' '{' BLOCK '}' { functionReturnTypeVoid = -1 ; }
       ;
 
 BLOCK : LINE        {;}
@@ -57,9 +61,9 @@ LINE : FLOAT VARNAME '=' E ';'        { struct Float v; v.Name = $2 ; v.Type = $
   | PRINTER ';'            {;}                                                          
   ;
 
-PRINTER  : DISPLAY E    { if(top()==1 ) {  printf(" \n printed : %f \n",$2); } }
-         | RETURN E    { if(top()==1) {  printf(" \n returned : %f \n",$2); exit(0);  } }
-         | RETURN     { if(top()==1) {  printf(" \n returned \n "); exit(0); } }
+PRINTER  : DISPLAY E   {   if(top()==1 || top()==-1 ) {  printf(" \n printed : %f \n",$2); } }
+         | RETURN E    { if(functionReturnTypeVoid == 1){ printf("\n Function type void cannot return any value \n")  ; exit(0); };  if(top()==1 || top()==-1 ) { functionReturnTypeNumber = 0 ; printf(" \n returned : %f \n",$2); exit(0);  } }
+         | RETURN      {  if(top()==1 || top()==-1) { if(functionReturnTypeNumber == 1){ printf("\n Error Function type does not return a value \n")  ; exit(0); }; printf(" \n returned \n "); exit(0); } }
          ;
 
 CONTROL : IF '(' CONDITIONALEXPRESSION ')' EXP    {  pop();  };

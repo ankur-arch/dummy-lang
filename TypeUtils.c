@@ -15,6 +15,7 @@ void addFloatVariable(struct Float v)
     if (FloatVariableStackCounter + 1 >= MAX_SLOT)
     {
         printf("Memory full \n");
+        exit(0);
     }
     else
     {
@@ -35,7 +36,6 @@ int getFloatValuePosition(char *variableName)
             return i;
         }
     }
-    printf("exited at position, reached end at %d \n ", FloatVariableStackCounter);
     return -1;
 }
 
