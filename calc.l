@@ -39,7 +39,7 @@ float                           { yylval.s = strdup(yytext) ; return  FLOAT; }
 int                           { yylval.s = strdup(yytext) ; return  INT; }
 void                           { yylval.s = strdup(yytext) ; return  VOID; }
 'if'                            { return IF; }
-[a-zA-Z]+                       { yylval.s = strdup(yytext) ; return VARNAME; } 
+[a-zA-Z]+([0-9]+)?                       { yylval.s = strdup(yytext) ; return VARNAME; } 
 [0-9]+(\.[0-9]+)?([eE][0-9]+)?  { yylval.f = atof(yytext); return FNUM; }
 [+\-*/)(=%;]                      { return yytext[0]; }
 [ \t\n]+                         { ; }
