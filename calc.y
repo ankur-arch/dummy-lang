@@ -49,14 +49,19 @@ int functionReturnsInt = 0 ;
 %left NOT 
 %left '+' '-'
 %left '*' 
-%left '/'
+%left '/' 
+%left '%'
 
 %%
 Start : BLOCK
-      | FLOAT  VARNAME '(' { functionReturnTypeNumber = 1 ; } ')' '{' BLOCK '}' { if(functionReturnTypeNumber != 0 ){ printf("\n Error Function does not return any value \n")  ; exit(0); };  functionReturnTypeNumber = -1 ; }
-      | INT  VARNAME '(' { functionReturnTypeNumber = 1 ; functionReturnsInt = 1 ; } ')' '{' BLOCK '}' { if(functionReturnTypeNumber != 0 ){ printf("\n Error Function does not return any value \n")  ; exit(0); };  functionReturnTypeNumber = -1 ; }
-      | VOID  VARNAME '(' { functionReturnTypeVoid = 1 ;  } ')' '{' BLOCK '}' { functionReturnTypeVoid = -1 ; }
+      | FLOAT  VARNAME '(' { functionReturnTypeNumber = 1 ; } ')' BODY { if(functionReturnTypeNumber != 0 ){ printf("\n Error Function does not return any value \n")  ; exit(0); };  functionReturnTypeNumber = -1 ; }
+      | INT  VARNAME '(' { functionReturnTypeNumber = 1 ; functionReturnsInt = 1 ; } ')' BODY { if(functionReturnTypeNumber != 0 ){ printf("\n Error Function does not return any value \n")  ; exit(0); };  functionReturnTypeNumber = -1 ; }
+      | VOID  VARNAME '(' { functionReturnTypeVoid = 1 ;  } ')' BODY { functionReturnTypeVoid = -1 ; }
       ;
+
+BODY : '{' BLOCK '}'
+     | '{' '}'
+     ;      
 
 BLOCK : LINE        {;}
   | BLOCK LINE      {;}
@@ -141,6 +146,7 @@ E : E '+' F     { $$ = $1 + $3; }
 
 F : F '*' D     { $$ = $1 * $3; } 
   | F '/' D     { $$ = $1/$3; }
+  | F '%' D     { $$ = (int)($1)%(int)($3); }
   | D           { $$ = $1; }
   ;
 

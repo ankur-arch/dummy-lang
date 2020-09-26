@@ -1,0 +1,14 @@
+float x = 100 ; 
+
+display x++;
+display x;
+
+display ++x;
+display x;
+
+float y = 100 ; 
+
+display y--;
+display y;
+display --y;
+display y;
