@@ -24,12 +24,20 @@ And you should see the desired output ( if the feature exists ) in the terminal
    - [x] ()
    - [x] - negation
    
+   Input
    
    ```
    // example [ don't forget the semi-colons at the end of the lines ] 
    float x = 2+2-4+(-2)/4*3 ; 
-   display x ; // outputs => printed 1.500
+   display x ; 
    ```
+ 
+   Output
+   
+   ```
+   printed 1.500
+   ```
+   
 2. #### Supports Conditional Operators
    - [x] ==
    - [x] !=
@@ -41,10 +49,19 @@ And you should see the desired output ( if the feature exists ) in the terminal
    - [x] && 
    - [x] !
    
+   Input 
+   
    ```
    // example [ don't forget the semi-colons at the end of the lines ] 
-   display 2>=2 && 4<=4 ; // outputs => printed 1.000 => meaning true
-   display (3==3 && 3==1 || 2==2 && !(3==3) ); // outputs => printed 0.00 => meaning false
+   display 2>=2 && 4<=4 ; 
+   display (3==3 && 3==1 || 2==2 && !(3==3) ); 
+   ```
+   
+   Output
+   
+   ```
+   printed 1.00
+   printed 0.00
    ```
 
 3. #### Supports shorthand operators
@@ -58,11 +75,58 @@ And you should see the desired output ( if the feature exists ) in the terminal
    - [x] ++*variableName* 
    - [x] --*variableName* 
    
+   Input 
+   
+   ```
+   float x = 100 ; 
+
+   display x++;
+   display x;
+
+   display ++x;
+   display x;
+
+   float y = 100 ; 
+
+   display y--;
+   display y;
+   display --y;
+   display y;
+   ```
+   
+   Output
+   
+   ```
+   Variable x successfully updated 
+ 
+   printed  : 100.000000 
+ 
+   printed  : 101.000000 
+   Variable x successfully updated 
+ 
+   printed  : 102.000000 
+ 
+   printed  : 102.000000 
+   Variable y successfully updated 
+ 
+   printed  : 100.000000 
+ 
+   printed  : 99.000000 
+   Variable y successfully updated 
+ 
+   printed  : 98.000000 
+ 
+   printed  : 98.000000 
+   ```
+   
 4. #### Supports Variable Declaration 
    As of now the **only types is float**,
    however the **grammar for int** is recognized
    
    example of supported variable declarations ( uninitialized variables throw error and will result in the termination of the program ) 
+   
+   Input 
+   
    ```
    int v1, v2 , v3 ; // has to end line with semicolon 
    int v1, v2 = 10 ; // v2 has a value of 10.0 however v1 is uninitialized
