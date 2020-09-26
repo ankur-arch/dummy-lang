@@ -17,6 +17,7 @@ int functionReturnTypeVoid = -1 ;
 int integerVariableEncountered = 0 , floatVariableEncountered = 0 ; 
 int printInt = 0 ;
 int enteredAssignment = 1; 
+int functionReturnsInt = 0 ;
 %}
 
 %union{
@@ -53,7 +54,8 @@ int enteredAssignment = 1;
 %%
 Start : BLOCK
       | FLOAT  VARNAME '(' { functionReturnTypeNumber = 1 ; } ')' '{' BLOCK '}' { if(functionReturnTypeNumber != 0 ){ printf("\n Error Function does not return any value \n")  ; exit(0); };  functionReturnTypeNumber = -1 ; }
-      | VOID  VARNAME '(' { functionReturnTypeVoid = 1 ; } ')' '{' BLOCK '}' { functionReturnTypeVoid = -1 ; }
+      | INT  VARNAME '(' { functionReturnTypeNumber = 1 ; functionReturnsInt = 1 ; } ')' '{' BLOCK '}' { if(functionReturnTypeNumber != 0 ){ printf("\n Error Function does not return any value \n")  ; exit(0); };  functionReturnTypeNumber = -1 ; }
+      | VOID  VARNAME '(' { functionReturnTypeVoid = 1 ;  } ')' '{' BLOCK '}' { functionReturnTypeVoid = -1 ; }
       ;
 
 BLOCK : LINE        {;}
@@ -87,7 +89,7 @@ FINALVAR :  VARNAME '=' E { if(top()==1 || top()==-1 ) { Number v ; v.isInteger 
          ; 
 
 PRINTER  : DISPLAY E   {   if(top()==1 || top()==-1 ) { printInt == 1 ? printf(" \n printed  : %f \n",($2)) : printf(" \n printed  : %f \n",$2); printInt = 0;} }
-         | RETURN E    {   if(functionReturnTypeVoid == 1){ printf("\n Function type void cannot return any value \n")  ; exit(0); };  if(top()==1 || top()==-1 ) { functionReturnTypeNumber = 0 ; printf(" \n returned : %f \n",$2); exit(0);  } }
+         | RETURN E    {   if(functionReturnTypeVoid == 1){  printf("\n Function type void cannot return any value \n")  ; exit(0); };  if(top()==1 || top()==-1 ) { functionReturnTypeNumber = 0 ; functionReturnsInt == 1 ? printf(" \n returned : %d \n",(int)($2)) : printf(" \n returned : %f \n",$2); functionReturnsInt = 0; exit(0);  } }
          | RETURN      {  if(top()==1 || top()==-1) { if(functionReturnTypeNumber == 1){ printf("\n Error Function type does not return a value \n")  ; exit(0); }; printf(" \n returned \n "); exit(0); } }
          ;
 
