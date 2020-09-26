@@ -88,7 +88,7 @@ FINALVAR :  VARNAME '=' E { if(top()==1 || top()==-1 ) { Number v ; v.isInteger 
          |  VARNAME  { if(top()==1 || top()==-1 ) { Number v ; v.Name = $1; v.isIntitialized = 0; v.isInteger = integerVariableEncountered   ; v.value=-1; $$ = v; }}
          ; 
 
-PRINTER  : DISPLAY E   {   if(top()==1 || top()==-1 ) { printInt == 1 ? printf(" \n printed  : %f \n",($2)) : printf(" \n printed  : %f \n",$2); printInt = 0;} }
+PRINTER  : DISPLAY E   {   if(top()==1 || top()==-1 ) { printf(" \n printed  : %f \n",($2));} }
          | RETURN E    {   if(functionReturnTypeVoid == 1){  printf("\n Function type void cannot return any value \n")  ; exit(0); };  if(top()==1 || top()==-1 ) { functionReturnTypeNumber = 0 ; functionReturnsInt == 1 ? printf(" \n returned : %d \n",(int)($2)) : printf(" \n returned : %f \n",$2); functionReturnsInt = 0; exit(0);  } }
          | RETURN      {  if(top()==1 || top()==-1) { if(functionReturnTypeNumber == 1){ printf("\n Error Function type does not return a value \n")  ; exit(0); }; printf(" \n returned \n "); exit(0); } }
          ;
@@ -124,29 +124,29 @@ CONDITION : CONDITION OR CONDITION  {  int result = $1 || $3 ;  $$ = $1 || $3; }
           | G
           ;                                         
 
-G : G '<' G   { if(top()==1 || top()==-1 ) { int result = $1 < $3 ;  $$ = (int)($1 < $3); }}
-  | G '>' G   { if(top()==1 || top()==-1 ) { int result = $1 > $3 ;  $$ = $1 > $3; }}
-  | G GTE G   { if(top()==1 || top()==-1 ) { int result = $1 >= $3 ;  $$ = $1 >= $3; }}
-  | G LTE G   { if(top()==1 || top()==-1 ) { int result = $1 <= $3 ;  $$ = $1 <= $3; }}
-  | G NET G   { if(top()==1 || top()==-1 ) { int result = $1 != $3 ;  $$ = $1 != $3; }}
-  | G EQ G    { if(top()==1 || top()==-1 ) { int result = $1 == $3 ;  $$ = $1 == $3; }} 
-  | E         { if(top()==1 || top()==-1 ) { $$ = $1; }}
+G : G '<' G   {  int result = $1 < $3 ;  $$ = (int)($1 < $3); }
+  | G '>' G   {  int result = $1 > $3 ;  $$ = $1 > $3; }
+  | G GTE G   {  int result = $1 >= $3 ;  $$ = $1 >= $3; }
+  | G LTE G   {  int result = $1 <= $3 ;  $$ = $1 <= $3; }
+  | G NET G   {  int result = $1 != $3 ;  $$ = $1 != $3; }
+  | G EQ G    {  int result = $1 == $3 ;  $$ = $1 == $3; } 
+  | E         {  $$ = $1; }
   ;
 
 
-E : E '+' F     { if(top()==1 || top()==-1 ) {$$ = $1 + $3;} }
-  | E '-' F     { if(top()==1 || top()==-1 ) {$$ = $1 - $3;} }
-  | F           { if(top()==1 || top()==-1 ) {$$ = $1;} }
+E : E '+' F     { $$ = $1 + $3; }
+  | E '-' F     { $$ = $1 - $3; }
+  | F           { $$ = $1; }
   ;
 
-F : F '*' D     { if(top()==1 || top()==-1 ) {$$ = $1 * $3;} } 
-  | F '/' D     { if(top()==1 || top()==-1 ) {$$ = $1/$3;} }
-  | D           { if(top()==1 || top()==-1 ) {$$ = $1;} }
+F : F '*' D     { $$ = $1 * $3; } 
+  | F '/' D     { $$ = $1/$3; }
+  | D           { $$ = $1; }
   ;
 
-D : '(' CONDITION ')'   { if(top()==1 || top()==-1 ) {$$ = ($2);} }    
-  | '-' D       { if(top()==1 || top()==-1 ) {$$ = -1*$2;} }
-  | L           { if(top()==1 || top()==-1 ) {$$ = $1;} } 
+D : '(' CONDITION ')'   { $$ = ($2); }    
+  | '-' D       { $$ = -1*$2; }
+  | L           { $$ = $1; } 
   ;
 
 L : FNUM        { if(top()==1 || top()==-1 ) {$$ = $1;} }

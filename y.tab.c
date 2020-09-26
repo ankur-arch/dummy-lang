@@ -1554,7 +1554,7 @@ yyreduce:
 
   case 29:
 #line 91 "calc.y" /* yacc.c:1646  */
-    {   if(top()==1 || top()==-1 ) { printInt == 1 ? printf(" \n printed  : %f \n",((yyvsp[0].f))) : printf(" \n printed  : %f \n",(yyvsp[0].f)); printInt = 0;} }
+    {   if(top()==1 || top()==-1 ) { printf(" \n printed  : %f \n",((yyvsp[0].f)));} }
 #line 1559 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1650,97 +1650,97 @@ yyreduce:
 
   case 45:
 #line 127 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) { int result = (yyvsp[-2].f) < (yyvsp[0].f) ;  (yyval.f) = (int)((yyvsp[-2].f) < (yyvsp[0].f)); }}
+    {  int result = (yyvsp[-2].f) < (yyvsp[0].f) ;  (yyval.f) = (int)((yyvsp[-2].f) < (yyvsp[0].f)); }
 #line 1655 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
 #line 128 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) { int result = (yyvsp[-2].f) > (yyvsp[0].f) ;  (yyval.f) = (yyvsp[-2].f) > (yyvsp[0].f); }}
+    {  int result = (yyvsp[-2].f) > (yyvsp[0].f) ;  (yyval.f) = (yyvsp[-2].f) > (yyvsp[0].f); }
 #line 1661 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
 #line 129 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) { int result = (yyvsp[-2].f) >= (yyvsp[0].f) ;  (yyval.f) = (yyvsp[-2].f) >= (yyvsp[0].f); }}
+    {  int result = (yyvsp[-2].f) >= (yyvsp[0].f) ;  (yyval.f) = (yyvsp[-2].f) >= (yyvsp[0].f); }
 #line 1667 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
 #line 130 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) { int result = (yyvsp[-2].f) <= (yyvsp[0].f) ;  (yyval.f) = (yyvsp[-2].f) <= (yyvsp[0].f); }}
+    {  int result = (yyvsp[-2].f) <= (yyvsp[0].f) ;  (yyval.f) = (yyvsp[-2].f) <= (yyvsp[0].f); }
 #line 1673 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
 #line 131 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) { int result = (yyvsp[-2].f) != (yyvsp[0].f) ;  (yyval.f) = (yyvsp[-2].f) != (yyvsp[0].f); }}
+    {  int result = (yyvsp[-2].f) != (yyvsp[0].f) ;  (yyval.f) = (yyvsp[-2].f) != (yyvsp[0].f); }
 #line 1679 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
 #line 132 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) { int result = (yyvsp[-2].f) == (yyvsp[0].f) ;  (yyval.f) = (yyvsp[-2].f) == (yyvsp[0].f); }}
+    {  int result = (yyvsp[-2].f) == (yyvsp[0].f) ;  (yyval.f) = (yyvsp[-2].f) == (yyvsp[0].f); }
 #line 1685 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
 #line 133 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) { (yyval.f) = (yyvsp[0].f); }}
+    {  (yyval.f) = (yyvsp[0].f); }
 #line 1691 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
 #line 137 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) {(yyval.f) = (yyvsp[-2].f) + (yyvsp[0].f);} }
+    { (yyval.f) = (yyvsp[-2].f) + (yyvsp[0].f); }
 #line 1697 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
 #line 138 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) {(yyval.f) = (yyvsp[-2].f) - (yyvsp[0].f);} }
+    { (yyval.f) = (yyvsp[-2].f) - (yyvsp[0].f); }
 #line 1703 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
 #line 139 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) {(yyval.f) = (yyvsp[0].f);} }
+    { (yyval.f) = (yyvsp[0].f); }
 #line 1709 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
 #line 142 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) {(yyval.f) = (yyvsp[-2].f) * (yyvsp[0].f);} }
+    { (yyval.f) = (yyvsp[-2].f) * (yyvsp[0].f); }
 #line 1715 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
 #line 143 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) {(yyval.f) = (yyvsp[-2].f)/(yyvsp[0].f);} }
+    { (yyval.f) = (yyvsp[-2].f)/(yyvsp[0].f); }
 #line 1721 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
 #line 144 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) {(yyval.f) = (yyvsp[0].f);} }
+    { (yyval.f) = (yyvsp[0].f); }
 #line 1727 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
 #line 147 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) {(yyval.f) = ((yyvsp[-1].f));} }
+    { (yyval.f) = ((yyvsp[-1].f)); }
 #line 1733 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
 #line 148 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) {(yyval.f) = -1*(yyvsp[0].f);} }
+    { (yyval.f) = -1*(yyvsp[0].f); }
 #line 1739 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
 #line 149 "calc.y" /* yacc.c:1646  */
-    { if(top()==1 || top()==-1 ) {(yyval.f) = (yyvsp[0].f);} }
+    { (yyval.f) = (yyvsp[0].f); }
 #line 1745 "y.tab.c" /* yacc.c:1646  */
     break;
 
