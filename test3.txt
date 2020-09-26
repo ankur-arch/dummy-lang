@@ -1,0 +1,13 @@
+float a = 0;
+
+display a;
+a += 1.5;
+
+if(223>42){
+a *= 2; 
+display a;
+}else{
+display a;
+return 4;
+}
+

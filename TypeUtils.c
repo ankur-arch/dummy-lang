@@ -4,7 +4,7 @@
 #include "Types.h"
 
 
-void addFloatVariable(struct Float v)
+void addFloatVariable(Number v)
 {
 
     int index = getFloatValuePosition(v.Name);
@@ -55,18 +55,22 @@ void updateFloatVariable(char *variableName, float newValue)
 }
 
 
-float getFloatVariableValue(char *variableName)
+Number getFloatVariableValue(char *variableName)
 {
     int index = getFloatValuePosition(variableName);
     if (index != -1)
     {
-        return FloatVariableTable[index].value;
+        if(!FloatVariableTable[index].isIntitialized) {
+            printf("\n Variable  %s has not been initialized \n", FloatVariableTable[index].Name );
+            exit(0);
+        } 
+        return FloatVariableTable[index];
     }
     else
     {
         printf("Variable \'%s\' not found \n", variableName);
+        exit(0);
     };
-    return 0;
 }
 
 

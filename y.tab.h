@@ -46,53 +46,70 @@ extern int yydebug;
   enum yytokentype
   {
     VOID = 258,
-    FLOAT = 259,
-    IF = 260,
-    ELSE = 261,
-    ELSEIF = 262,
-    VARNAME = 263,
-    FNUM = 264,
-    LTE = 265,
-    GTE = 266,
-    EQ = 267,
-    NOT = 268,
-    NET = 269,
-    AND = 270,
-    OR = 271,
-    DISPLAY = 272,
-    RETURN = 273
+    INT = 259,
+    FLOAT = 260,
+    IF = 261,
+    ELSE = 262,
+    ELSEIF = 263,
+    INCR = 264,
+    DECR = 265,
+    VARNAME = 266,
+    FNUM = 267,
+    LTE = 268,
+    GTE = 269,
+    EQ = 270,
+    NOT = 271,
+    NET = 272,
+    AND = 273,
+    OR = 274,
+    DISPLAY = 275,
+    RETURN = 276,
+    PLUSASSIGN = 277,
+    MINUSASSIGN = 278,
+    MULASSIGN = 279,
+    DIVASSIGN = 280,
+    MODASSIGN = 281
   };
 #endif
 /* Tokens.  */
 #define VOID 258
-#define FLOAT 259
-#define IF 260
-#define ELSE 261
-#define ELSEIF 262
-#define VARNAME 263
-#define FNUM 264
-#define LTE 265
-#define GTE 266
-#define EQ 267
-#define NOT 268
-#define NET 269
-#define AND 270
-#define OR 271
-#define DISPLAY 272
-#define RETURN 273
+#define INT 259
+#define FLOAT 260
+#define IF 261
+#define ELSE 262
+#define ELSEIF 263
+#define INCR 264
+#define DECR 265
+#define VARNAME 266
+#define FNUM 267
+#define LTE 268
+#define GTE 269
+#define EQ 270
+#define NOT 271
+#define NET 272
+#define AND 273
+#define OR 274
+#define DISPLAY 275
+#define RETURN 276
+#define PLUSASSIGN 277
+#define MINUSASSIGN 278
+#define MULASSIGN 279
+#define DIVASSIGN 280
+#define MODASSIGN 281
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 19 "calc.y" /* yacc.c:1909  */
+#line 22 "calc.y" /* yacc.c:1909  */
 
    float f;
    int i;
    char* s;
+   Number n;
 
-#line 96 "y.tab.h" /* yacc.c:1909  */
+#line 113 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

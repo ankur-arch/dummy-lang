@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<stdbool.h>
 #include<stdlib.h>
+#include<string.h>
 #include "Types.h"
 extern int yylex();
 int stackPosition = -1 ;
@@ -13,21 +14,28 @@ void actionHandler(int stackTop, int conditionResult, char *condition);
 int firstElseIf = 0;
 int functionReturnTypeNumber = -1 ; 
 int functionReturnTypeVoid = -1 ; 
+int integerVariableEncountered = 0 , floatVariableEncountered = 0 ; 
+int printInt = 0 ;
+int enteredAssignment = 1; 
 %}
-
 
 %union{
    float f;
    int i;
    char* s;
+   Number n;
 }
 
+
 %start Start
-%token<s> VOID FLOAT IF ELSE ELSEIF
+%token<s> VOID INT FLOAT IF ELSE ELSEIF INCR DECR 
 %token<s> VARNAME
 %token<f> FNUM
 %token '<' '>' LTE GTE EQ NOT NET AND OR  DISPLAY RETURN 
+%token  PLUSASSIGN MINUSASSIGN MULASSIGN DIVASSIGN MODASSIGN 
 %type<s> BLOCK LINE PRINTER 
+%type<s> ASSIGNMENT 
+%type<n> ASSIGN FINALVAR
 %type<f> G CONDITIONALEXPRESSION CONDITION
 %type<s>  EXP EXTRA EEXP
 %type<s>  CONTROL 
@@ -56,13 +64,30 @@ BLOCK : LINE        {;}
   | BLOCK CONDITION ';'     {;}
   ; 
 
-LINE : FLOAT VARNAME '=' E ';'        { struct Float v; v.Name = $2 ; v.Type = $1 ; v.value=$4; addFloatVariable(v); }
-  | VARNAME '=' E ';'              { updateFloatVariable($1,$3); }
+LINE : ASSIGNMENT         
+  | VARNAME '=' E ';'       { if(top()==1 || top()==-1 ) { updateFloatVariable($1,$3); } }
+  | VARNAME PLUSASSIGN E ';' { if(top()==1 || top()==-1 ) {  Number v = getFloatVariableValue($1); updateFloatVariable($1 , v.value+$3); } }
+  | VARNAME MINUSASSIGN E ';' { if(top()==1 || top()==-1 ) { Number v = getFloatVariableValue($1); updateFloatVariable($1 , v.value-$3); }}
+  | VARNAME MULASSIGN E ';' { if(top()==1 || top()==-1 ) { Number v = getFloatVariableValue($1); updateFloatVariable($1 , v.value*$3); }}
+  | VARNAME DIVASSIGN E ';' { if(top()==1 || top()==-1 ) { Number v = getFloatVariableValue($1); updateFloatVariable($1 , v.value/$3); }}
+  | VARNAME MODASSIGN E ';' { if(top()==1 || top()==-1 ) { Number v = getFloatVariableValue($1); updateFloatVariable($1 , (int)(v.value)%(int)($3)); }}
   | PRINTER ';'            {;}                                                          
   ;
 
-PRINTER  : DISPLAY E   {   if(top()==1 || top()==-1 ) {  printf(" \n printed : %f \n",$2); } }
-         | RETURN E    { if(functionReturnTypeVoid == 1){ printf("\n Function type void cannot return any value \n")  ; exit(0); };  if(top()==1 || top()==-1 ) { functionReturnTypeNumber = 0 ; printf(" \n returned : %f \n",$2); exit(0);  } }
+ASSIGNMENT : FLOAT  ASSIGN ';' { if(top()==1 || top()==-1 ) { integerVariableEncountered = 0; }  }
+            |INT ASSIGN ';'  { if(top()==1 || top()==-1 ) { integerVariableEncountered = 1 ; } }
+            ; 
+
+ASSIGN : ASSIGN ',' FINALVAR  { if(top()==1 || top()==-1 ) { $$=$3; addFloatVariable($3);} }
+   | FINALVAR                 { if(top()==1 || top()==-1 ) { $$=$1; addFloatVariable($1); }  }
+   ;
+
+FINALVAR :  VARNAME '=' E { if(top()==1 || top()==-1 ) { Number v ; v.isInteger = integerVariableEncountered ; v.Name = $1; v.value = $3  ;  v.isIntitialized = 1 ; $$ = v; }} 
+         |  VARNAME  { if(top()==1 || top()==-1 ) { Number v ; v.Name = $1; v.isIntitialized = 0; v.isInteger = integerVariableEncountered   ; v.value=-1; $$ = v; }}
+         ; 
+
+PRINTER  : DISPLAY E   {   if(top()==1 || top()==-1 ) { printInt == 1 ? printf(" \n printed  : %f \n",($2)) : printf(" \n printed  : %f \n",$2); printInt = 0;} }
+         | RETURN E    {   if(functionReturnTypeVoid == 1){ printf("\n Function type void cannot return any value \n")  ; exit(0); };  if(top()==1 || top()==-1 ) { functionReturnTypeNumber = 0 ; printf(" \n returned : %f \n",$2); exit(0);  } }
          | RETURN      {  if(top()==1 || top()==-1) { if(functionReturnTypeNumber == 1){ printf("\n Error Function type does not return a value \n")  ; exit(0); }; printf(" \n returned \n "); exit(0); } }
          ;
 
@@ -97,33 +122,37 @@ CONDITION : CONDITION OR CONDITION  {  int result = $1 || $3 ;  $$ = $1 || $3; }
           | G
           ;                                         
 
-G : G '<' G   {  int result = $1 < $3 ;  $$ = (int)($1 < $3); }
-  | G '>' G   {  int result = $1 > $3 ;  $$ = $1 > $3; }
-  | G GTE G   {  int result = $1 >= $3 ;  $$ = $1 >= $3; }
-  | G LTE G   {  int result = $1 <= $3 ;  $$ = $1 <= $3; }
-  | G NET G   {  int result = $1 != $3 ;  $$ = $1 != $3; }
-  | G EQ G    {  int result = $1 == $3 ;  $$ = $1 == $3; } 
-  | E         {  $$ = $1; }
+G : G '<' G   { if(top()==1 || top()==-1 ) { int result = $1 < $3 ;  $$ = (int)($1 < $3); }}
+  | G '>' G   { if(top()==1 || top()==-1 ) { int result = $1 > $3 ;  $$ = $1 > $3; }}
+  | G GTE G   { if(top()==1 || top()==-1 ) { int result = $1 >= $3 ;  $$ = $1 >= $3; }}
+  | G LTE G   { if(top()==1 || top()==-1 ) { int result = $1 <= $3 ;  $$ = $1 <= $3; }}
+  | G NET G   { if(top()==1 || top()==-1 ) { int result = $1 != $3 ;  $$ = $1 != $3; }}
+  | G EQ G    { if(top()==1 || top()==-1 ) { int result = $1 == $3 ;  $$ = $1 == $3; }} 
+  | E         { if(top()==1 || top()==-1 ) { $$ = $1; }}
   ;
 
 
-E : E '+' F     {$$ = $1 + $3;}
-  | E '-' F     {$$ = $1 - $3;}
-  | F           {$$ = $1;}
+E : E '+' F     { if(top()==1 || top()==-1 ) {$$ = $1 + $3;} }
+  | E '-' F     { if(top()==1 || top()==-1 ) {$$ = $1 - $3;} }
+  | F           { if(top()==1 || top()==-1 ) {$$ = $1;} }
   ;
 
-F : F '*' D     {$$ = $1 * $3;} 
-  | F '/' D     {$$ = $1/$3;}
-  | D           {$$ = $1;}
+F : F '*' D     { if(top()==1 || top()==-1 ) {$$ = $1 * $3;} } 
+  | F '/' D     { if(top()==1 || top()==-1 ) {$$ = $1/$3;} }
+  | D           { if(top()==1 || top()==-1 ) {$$ = $1;} }
   ;
 
-D : '(' CONDITION ')'   {$$ = ($2);}    
-  | '-' D       {$$ = -1*$2;}
-  | L           {$$ = $1;} 
+D : '(' CONDITION ')'   { if(top()==1 || top()==-1 ) {$$ = ($2);} }    
+  | '-' D       { if(top()==1 || top()==-1 ) {$$ = -1*$2;} }
+  | L           { if(top()==1 || top()==-1 ) {$$ = $1;} } 
   ;
 
-L : FNUM        {$$ = $1;}
-  | VARNAME     {$$ = getFloatVariableValue($1); }
+L : FNUM        { if(top()==1 || top()==-1 ) {$$ = $1;} }
+  | VARNAME     { if(top()==1 || top()==-1 ) { Number v = getFloatVariableValue($1); printInt = !v.isInteger; $$ = v.value; }}
+  | VARNAME INCR     {if(top()==1 || top()==-1 ) { Number v = getFloatVariableValue($1); updateFloatVariable(v.Name,v.value+1); printInt = !v.isInteger; $$ = v.value; }}
+  | VARNAME DECR    { if(top()==1 || top()==-1 ) { Number v = getFloatVariableValue($1); updateFloatVariable(v.Name,v.value-1); printInt = !v.isInteger; $$ = v.value; }}
+  | INCR VARNAME     { if(top()==1 || top()==-1 ) { Number v = getFloatVariableValue($2); updateFloatVariable(v.Name,v.value+1); printInt = !v.isInteger; $$ = v.value+1; }}
+  | DECR VARNAME     { if(top()==1 || top()==-1 ) { Number v = getFloatVariableValue($2); updateFloatVariable(v.Name,v.value-1); printInt = !v.isInteger; $$ = v.value-1; }}
   ;    
 %%
 
