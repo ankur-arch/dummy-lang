@@ -4,8 +4,7 @@
 ### Description 
 This is the course project for Compiler Construction, Summer 2020. It uses a stack to implement control flow rather than using an **AST**  
 
-- **Student Name** :Ankur Datta
-- **ID** : 1720130
+
 
 #### Getting Started
 
