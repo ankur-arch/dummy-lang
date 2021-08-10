@@ -1,4 +1,4 @@
-# SIMPle-Lang 
+# Dummy Lang 
 ## A primitive implementation of c function parser using lex, yacc and c
 
 ### Description 
